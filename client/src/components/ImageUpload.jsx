@@ -1,42 +1,102 @@
-import React, { useState } from "react";
-import { uploadImage } from "../api";
+import React, { useState, useRef } from "react";
+import { Box, Typography, Button, Card, CardMedia, CardContent, Container, CircularProgress } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const ImageUpload = () => {
   const [file, setFile] = useState(null);
-  const [response, setResponse] = useState(null);
+  const [word, setWord] = useState("");
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [processedImageUrl, setProcessedImageUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      const fileReader = new FileReader();
+      fileReader.onload = () => setPreviewUrl(fileReader.result);
+      fileReader.readAsDataURL(selectedFile);
+    }
   };
 
+  const handleWordChange = (e) => setWord(e.target.value);
+
   const handleUpload = async () => {
-    if (!file) return alert("Please select a file!");
+    if (!file || !word) return;
+    setIsUploading(true);
 
     const formData = new FormData();
     formData.append("image", file);
+    formData.append("word", word);
 
-    const result = await uploadImage(formData);
-    setResponse(result);
+    try {
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      setProcessedImageUrl(`http://localhost:5000${result.processed_image_url}`);
+    } catch (error) {
+      console.error("Upload failed:", error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6">
-      <h2 className="text-2xl font-bold">Upload Image for Processing</h2>
-      <input type="file" onChange={handleFileChange} className="border p-2" />
-      <button
-        onClick={handleUpload}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Upload
-      </button>
+    <Container maxWidth="md" sx={{ my: 5 }}>
+      <Card>
+        <CardContent>
+          <Typography variant="h4" align="center" sx={{ fontWeight: 700 }}>
+            Image Upload & Template Matching
+          </Typography>
 
-      {response && (
-        <div className="mt-4 text-center">
-          <h3 className="text-xl">Processed Image:</h3>
-          <img src={response.processed_image_url} alt="Processed" className="mt-2 border rounded-lg" />
-        </div>
-      )}
-    </div>
+          <input
+            type="text"
+            value={word}
+            onChange={handleWordChange}
+            placeholder="Enter word to match"
+            style={{ margin: "10px 0", padding: "8px", width: "100%" }}
+          />
+
+          <Box onClick={() => fileInputRef.current.click()}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              accept="image/*"
+            />
+            <Button variant="contained" color="primary" sx={{ width: "100%" }}>
+              <CloudUploadIcon sx={{ mr: 1 }} />
+              Upload Image
+            </Button>
+          </Box>
+
+          {previewUrl && <CardMedia component="img" image={previewUrl} alt="Preview" sx={{ mt: 3 }} />}
+
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+            <Button
+              onClick={handleUpload}
+              disabled={!file || !word || isUploading}
+              variant="contained"
+              color="success"
+            >
+              {isUploading ? <CircularProgress size={20} sx={{ color: "white", mr: 1 }} /> : "Find Word"}
+            </Button>
+          </Box>
+
+          {processedImageUrl && (
+            <Box sx={{ mt: 4, textAlign: "center" }}>
+              <Typography variant="h5">Result</Typography>
+              <CardMedia component="img" image={processedImageUrl} alt="Processed" sx={{ mt: 2 }} />
+            </Box>
+          )}
+        </CardContent>
+      </Card>
+    </Container>
   );
 };
 

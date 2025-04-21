@@ -37,7 +37,8 @@ const ImageUpload = () => {
       });
 
       const result = await response.json();
-      setProcessedImageUrl(`http://localhost:5000${result.processed_image_url}`);
+      setProcessedImageUrl(`data:image/png;base64,${result.image_base64}`);
+
     } catch (error) {
       console.error("Upload failed:", error);
     } finally {

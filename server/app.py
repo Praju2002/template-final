@@ -2,10 +2,14 @@ import os
 import uuid
 import cv2
 import numpy as np
+import base64
 from flask import Flask, request, jsonify, send_from_directory
 from PIL import Image, ImageDraw, ImageFont
+from flask_cors import CORS
+
 
 app = Flask(__name__)
+CORS(app)
 UPLOAD_FOLDER = 'uploads'
 RESULT_FOLDER = 'results'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -65,10 +69,10 @@ def upload():
     if not image_file or not word:
         return jsonify({"error": "Missing image or word"}), 400
 
-    img_path = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4().hex}.png")
-    image_file.save(img_path)
-    
-    img = cv2.imread(img_path)
+    # Read image
+    img_array = np.frombuffer(image_file.read(), np.uint8)
+    img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+
     pre_img = preprocess(img)
     word_img = generate_word_image(word)
     
@@ -85,11 +89,11 @@ def upload():
         cv2.putText(img, "No match found", (20, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
 
-    result_name = f"result_{uuid.uuid4().hex}.png"
-    result_path = os.path.join(RESULT_FOLDER, result_name)
-    cv2.imwrite(result_path, img)
+    # Convert final image to base64
+    _, buffer = cv2.imencode('.png', img)
+    base64_img = base64.b64encode(buffer).decode('utf-8')
 
-    return jsonify({"processed_image_url": f"/results/{result_name}"})
+    return jsonify({"image_base64": base64_img})
 
 
 @app.route("/results/<filename>")

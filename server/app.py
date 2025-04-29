@@ -17,9 +17,32 @@ os.makedirs(RESULT_FOLDER, exist_ok=True)
 
 # ==== Preprocessing ====
 def preprocess(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                 cv2.THRESH_BINARY_INV, 15, 10)
+    #converting into a grey scale image
+    preProcessedImg= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    cv2.imshow("origial ",preProcessedImg)
+
+
+    '''#removing gausian blur
+    preProcessedImg = cv2.GaussianBlur(src=preProcessedImg,ksize=(5,5),sigmaX=0)
+
+    cv2.imshow("appling gausian blur",preProcessedImg)
+    cv2.waitKey()'''
+    
+    kernal = cv2.getStructuringElement(cv2.MORPH_RECT,ksize=(5,5))
+    preProcessedImg = cv2.erode(preProcessedImg,kernel=kernal,iterations=2)
+    cv2.imshow("appling erosion ",preProcessedImg)
+    cv2.waitKey()
+
+    preProcessedImg = cv2.dilate(preProcessedImg,kernel=kernal,iterations=2)
+    cv2.imshow("appling dilution",preProcessedImg)
+    cv2.waitKey()
+
+    preProcessedImg = cv2.adaptiveThreshold(preProcessedImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV, 15, 10)
+    cv2.imshow("appling binary image",preProcessedImg)
+    cv2.waitKey()
+
+    return preProcessedImg
+    
 
 # ==== Generate Template ====
 def generate_word_image(word, font_path="C:/Windows/Fonts/arial.ttf", font_size=36):
@@ -35,6 +58,14 @@ def generate_word_image(word, font_path="C:/Windows/Fonts/arial.ttf", font_size=
     
     word_np = np.array(img)
     _, binarized = cv2.threshold(word_np, 127, 255, cv2.THRESH_BINARY_INV)
+    
+
+    """
+    cv2.imshow("appling erosion ",binarized)
+    cv2.waitKey()
+    """
+
+
     return binarized
 
 # ==== Template Matching ====

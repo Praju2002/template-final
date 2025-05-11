@@ -6,6 +6,9 @@ import base64
 from flask import Flask, request, jsonify, send_from_directory
 from PIL import Image, ImageDraw, ImageFont
 from flask_cors import CORS
+import preProcessing as pp
+import wordExtract as we
+import templateOperation as tempOp
 
 
 app = Flask(__name__)
@@ -14,82 +17,6 @@ UPLOAD_FOLDER = 'uploads'
 RESULT_FOLDER = 'results'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
-
-# ==== Preprocessing ====
-def preprocess(img):
-    #converting into a grey scale image
-    preProcessedImg= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("origial ",preProcessedImg)
-
-
-    '''#removing gausian blur
-    preProcessedImg = cv2.GaussianBlur(src=preProcessedImg,ksize=(5,5),sigmaX=0)
-
-    cv2.imshow("appling gausian blur",preProcessedImg)
-    cv2.waitKey()'''
-    
-    kernal = cv2.getStructuringElement(cv2.MORPH_RECT,ksize=(5,5))
-    preProcessedImg = cv2.erode(preProcessedImg,kernel=kernal,iterations=2)
-    cv2.imshow("appling erosion ",preProcessedImg)
-    cv2.waitKey()
-
-    preProcessedImg = cv2.dilate(preProcessedImg,kernel=kernal,iterations=2)
-    cv2.imshow("appling dilution",preProcessedImg)
-    cv2.waitKey()
-
-    preProcessedImg = cv2.adaptiveThreshold(preProcessedImg, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV, 15, 10)
-    cv2.imshow("appling binary image",preProcessedImg)
-    cv2.waitKey()
-
-    return preProcessedImg
-    
-
-# ==== Generate Template ====
-def generate_word_image(word, font_path="C:/Windows/Fonts/arial.ttf", font_size=36):
-    font = ImageFont.truetype(font_path, font_size)
-    dummy = Image.new("L", (1, 1), color=255)
-    draw = ImageDraw.Draw(dummy)
-    bbox = draw.textbbox((0, 0), word, font=font)
-    size = (bbox[2] - bbox[0], bbox[3] - bbox[1])
-    
-    img = Image.new("L", size, color=255)
-    draw = ImageDraw.Draw(img)
-    draw.text((0, 0), word, fill=0, font=font)
-    
-    word_np = np.array(img)
-    _, binarized = cv2.threshold(word_np, 127, 255, cv2.THRESH_BINARY_INV)
-    
-
-    """
-    cv2.imshow("appling erosion ",binarized)
-    cv2.waitKey()
-    """
-
-
-    return binarized
-
-# ==== Template Matching ====
-def match_word_in_image(image, word_template, threshold=0.5):
-    h_img, w_img = image.shape
-    h_temp, w_temp = word_template.shape
-    best_match = None
-    best_val = -1
-    best_scale = 1.0
-
-    for scale in np.linspace(0.6, 1.4, 10):
-        resized = cv2.resize(word_template, None, fx=scale, fy=scale, interpolation=cv2.INTER_LINEAR)
-        if resized.shape[0] > h_img or resized.shape[1] > w_img:
-            continue
-
-        result = cv2.matchTemplate(image, resized, cv2.TM_CCOEFF_NORMED)
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
-
-        if max_val > best_val:
-            best_val = max_val
-            best_match = (max_loc, resized.shape[::-1])
-            best_scale = scale
-
-    return best_match, best_val
 
 # ==== API Endpoint ====
 @app.route("/upload", methods=["POST"])
@@ -102,26 +29,47 @@ def upload():
 
     # Read image
     img_array = np.frombuffer(image_file.read(), np.uint8)
-    img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-
-    pre_img = preprocess(img)
-    word_img = generate_word_image(word)
+    originalImage = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
     
-    match, score = match_word_in_image(pre_img, word_img)
+    greyImage = cv2.imdecode(buf=img_array , flags=cv2.IMREAD_GRAYSCALE )
 
-    if match and score > 0.5:
-        top_left = match[0]
-        w, h = match[1]
-        bottom_right = (top_left[0] + w, top_left[1] + h)
-        cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 2)
-        cv2.putText(img, f"{word} ({score:.2f})", (top_left[0], top_left[1]-10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
+    image = pp.backgroundBlackForegroundWhite(image=greyImage)
+
+    averageHeight_Pixel= pp.averageHeightOfLetters(image=image)
+    iterationNumber = pp.requiredNumberOfIterations(x=averageHeight_Pixel)
+    print("avg ht and iteration", averageHeight_Pixel , iterationNumber)
+
+    smudgedImage = pp.prepareImageForWordExtraction(image=image,iteration= iterationNumber)
+
+    wordsProperty = we.wordExtract(image=smudgedImage , 
+                               averageHeight= averageHeight_Pixel,
+                               smudgedIteration= iterationNumber)
+    
+    print("creating template")
+
+    template = tempOp.createTemplate(word= word ,fontSize= averageHeight_Pixel)
+
+    print("template has been created \n template matching images")
+
+
+    foundWords = tempOp.templateMatching(image=image , template= template , wordsProperty=wordsProperty)
+
+    print(foundWords)
+
+    #to prevent overwriting 
+    finalImage=originalImage.copy()
+
+    if(len(foundWords) > 0):
+        finalImage = tempOp.putRectangles(image= finalImage , wordProperty= foundWords)
+    
     else:
-        cv2.putText(img, "No match found", (20, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 0, 255), 2)
+        cv2.putText(img= finalImage , text= "No match found",
+                    org=(20,30),fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale= 0.6, color=(0,255,0),
+                    thickness=2)
 
     # Convert final image to base64
-    _, buffer = cv2.imencode('.png', img)
+    _, buffer = cv2.imencode('.png', finalImage)
     base64_img = base64.b64encode(buffer).decode('utf-8')
 
     return jsonify({"image_base64": base64_img})

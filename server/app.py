@@ -20,7 +20,6 @@ os.makedirs(RESULT_FOLDER, exist_ok=True)
 
 # ==== API Endpoint ====
 @app.route("/upload", methods=["POST"])
-@app.route("/upload", methods=["POST"])
 def upload():
     image_file = request.files["image"]
     word = request.form.get("word")

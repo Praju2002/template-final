@@ -102,21 +102,37 @@ def templateMatching(image : np.ndarray , template : np.ndarray , wordsProperty 
         #to flush out any pervious image data in the variable 
 
         scaledTemplate = np.zeros((0, 0), dtype=np.uint8)
-        scaledTemplate = np.zeros((0, 0), dtype=np.uint8)
+        # scaledTemplate = np.zeros((0, 0), dtype=np.uint8)
 
 
         scaledTemplate = cv2.resize(src= template , dsize=(right-left,bottom-top) , interpolation= cv2.INTER_AREA)
 
-        sectionOfImage = image[top-1:bottom+1,left-1:right+1]
+        # sectionOfImage = image[top-1:bottom+1,left-1:right+1]
 
 
-        similarityScore = cv2.matchTemplate(image=sectionOfImage,templ= scaledTemplate,method=cv2.TM_SQDIFF_NORMED)
+        # similarityScore = cv2.matchTemplate(image=sectionOfImage,templ= scaledTemplate,method=cv2.TM_SQDIFF_NORMED)
 
        
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(similarityScore)
+        # min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(similarityScore)
 
-        if(min_val <1):
-            foundWords.append(wp)
+        # if(min_val <1):
+        #     foundWords.append(wp)
+        h,w = image.shape[:2]
+        top=max(0,top-1)
+        bottom=min(h,bottom+1)
+        left=max(0,left-1)
+        right=min(w,right+1)
+        sectionOfImage=image[top:bottom,left:right]
+
+        if sectionOfImage.shape[0] >=scaledTemplate.shape[0] and sectionOfImage.shape[1] >= scaledTemplate.shape[1]:
+            similarityScore=cv2.matchTemplate(image=sectionOfImage,templ=scaledTemplate,method=cv2.TM_SQDIFF_NORMED
+            )
+            min_val, _, _, _ = cv2.minMaxLoc(similarityScore)
+            if min_val <1:
+                foundWords.append(wp)
+        else:
+            print(f"[SKIP] Word property {wp} - section {sectionOfImage.shape} ,template {scaledTemplate.shape} ")
+        # print(f"min_val: {min_val} , max_val: {max_val} , min_loc: {min_loc} , max_loc: {max_loc}")
     
     return foundWords
 

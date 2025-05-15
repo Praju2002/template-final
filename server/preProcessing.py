@@ -52,31 +52,6 @@ def mixImage(image:np.ndarray , maks:np.ndarray):
 
 
 def averageHeightOfLetters(image : np.ndarray):
-    """
-        you enter image and returns the average height of letters
-
-        there are 4 cases here
-        case 1: current pixel = background, next pixel = background 
-            do nothing
-
-        case 2: current pixel = background, next pixel = line 
-            you are going to entered a line 
-                increment number of line
-
-        case 3: current pixel = line, next pixel = background 
-            you are going to exit a line 
-                increment current height
-                update average height
-                update current height
-                
-        case 4: current pixel = line, next pixel = line 
-            you are in line
-                increment current height
-
-
-         0 is True
-    """
-    
     averageHeight = 0
     currentHeight = 0
     NumberOfLine = 0
@@ -85,34 +60,35 @@ def averageHeightOfLetters(image : np.ndarray):
     sumOfCurrentPixel = 0
     sumOfNextPixel = np.sum(image[0])
 
-    for i in range(0,imageShape[0]-1):
-
+    for i in range(0, imageShape[0] - 1):
         sumOfCurrentPixel = sumOfNextPixel
-        sumOfNextPixel = np.sum(image[i+1])
+        sumOfNextPixel = np.sum(image[i + 1])
 
-        currentPixelIs0 = True if(sumOfCurrentPixel ==0 )else False
-        nextPixelIs0 = True if(sumOfNextPixel == 0 )else False
+        currentPixelIs0 = sumOfCurrentPixel == 0
+        nextPixelIs0 = sumOfNextPixel == 0
 
-        typeCase = (currentPixelIs0 , nextPixelIs0)
+        typeCase = (currentPixelIs0, nextPixelIs0)
 
         match typeCase:
-
-            case (True,True):     #in background
+            case (True, True):
                 continue
-
-            case (True,False):     #entering line
-                NumberOfLine +=1
-
-            case (False,True):      #exiting line 
-                currentHeight +=1
-                averageHeight = ((averageHeight * (NumberOfLine -1))+currentHeight )/NumberOfLine
+            case (True, False):
+                NumberOfLine += 1
+            case (False, True):
+                currentHeight += 1
+                if NumberOfLine == 0:
+                    print("Warning: Detected line end before start — skipping.")
+                    continue
+                averageHeight = ((averageHeight * (NumberOfLine - 1)) + currentHeight) / NumberOfLine
                 currentHeight = 0
-
-            case (False ,False):   #in line
-                currentHeight +=1
-
+            case (False, False):
+                currentHeight += 1
             case _:
-                print("law as been broken")
+                print("Unexpected case in line detection")
+
+    if NumberOfLine == 0:
+        print("Warning: No text lines detected.")
+        return 0  # or None if you want to force error handling
 
     return int(averageHeight)
 
@@ -129,4 +105,3 @@ def requiredNumberOfIterations(x : int):
 
 
     
-

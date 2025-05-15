@@ -150,4 +150,3 @@ def putRectangles(image : np.ndarray ,wordProperty: list):
     
 
 
-

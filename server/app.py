@@ -12,7 +12,7 @@ import templateOperation as tempOp
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app , supports_credentials=True)
 UPLOAD_FOLDER = 'uploads'
 RESULT_FOLDER = 'results'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)

@@ -45,12 +45,18 @@ def createTemplate(word :str , fontSize : int ):
 
     _, wordImage = cv2.threshold(src=wordImage, thresh=127, maxval=255,type= cv2.THRESH_BINARY )
 
-        
-    averageHeight_Pixel= pp.averageHeightOfLetters(image=wordImage)
-    iterationNumber = pp.requiredNumberOfIterations(x=averageHeight_Pixel)
+    averageHeight_Pixel,tallestText= pp.averageHeightOfLetters(image=wordImage)
+    imageShape = wordImage.shape
+
+    tallestLineImage = wordImage[tallestText[0]:tallestText[1],0:imageShape[1]]
+    averageGap_Pixel= pp.averageGapOfLetter(image=tallestLineImage)
+
+    iterationNumber = pp.requiredNumberOfIterations(averageGap= averageGap_Pixel)
+
+    print(averageHeight_Pixel,averageGap_Pixel,iterationNumber)
 
     smudgedImage = pp.prepareImageForWordExtraction(image=wordImage,iteration= iterationNumber)
-
+   
     #find words from the images 
 
     wordsProperty = we.wordExtract(image=smudgedImage , 

@@ -35,9 +35,14 @@ def upload():
 
     image = pp.backgroundBlackForegroundWhite(image=greyImage)
 
-    averageHeight_Pixel= pp.averageHeightOfLetters(image=image)
-    iterationNumber = pp.requiredNumberOfIterations(x=averageHeight_Pixel)
-    print("avg ht and iteration", averageHeight_Pixel , iterationNumber)
+    averageHeight_Pixel,tallestText= pp.averageHeightOfLetters(image=image)
+    imageShape = image.shape
+
+    tallestLineImage = image[tallestText[0]:tallestText[1],0:imageShape[1]]
+    averageGap_Pixel= pp.averageGapOfLetter(image=tallestLineImage)
+
+    iterationNumber = pp.requiredNumberOfIterations(averageGap= averageGap_Pixel)
+    print("avg ht, gap and iteration", averageHeight_Pixel,averageGap_Pixel , iterationNumber)
 
     smudgedImage = pp.prepareImageForWordExtraction(image=image,iteration= iterationNumber)
 

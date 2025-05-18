@@ -16,8 +16,8 @@ def createTemplate(word :str , fontSize : int ):
     
 
     # Create an image
-    fontSize = fontSize*2           # when resizing it would have maximum property
-    padding = paddingCalculation(fontSize)
+    fontSize = np.round(fontSize*1.5 ).astype(int)           # when resizing it would have maximum property
+    #padding = paddingCalculation(fontSize)
     font = ImageFont.truetype("arial.ttf", fontSize)
 
 
@@ -26,8 +26,8 @@ def createTemplate(word :str , fontSize : int ):
     bbox = draw.textbbox((0, 0), word, font=font)
         
     # Calculate size with padding
-    width = (bbox[2] - bbox[0] + padding *2)  
-    height =(bbox[3] - bbox[1] +padding ) 
+    width = (bbox[2] - bbox[0] + fontSize)  
+    height =(bbox[3] - bbox[1] +fontSize ) 
 
     img = Image.new("L", (width, height), "black")
     draw = ImageDraw.Draw(img)

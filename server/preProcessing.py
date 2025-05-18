@@ -20,15 +20,17 @@ def backgroundBlackForegroundWhite(image: np.ndarray ):
 def prepareImageForWordExtraction(image: np.ndarray, iteration : int):
     """
     enter a image with black background and white letters and number of iteration 
+    ps: removed morphological closing as they tended to change smudging drastically
+
     """
     processed = cv2.dilate(src= image,kernel=(3,3),iterations=1)
-    processed = cv2.morphologyEx(src= processed, op= cv2.MORPH_CLOSE, kernel=(3,3),iterations=1)
+    #processed = cv2.morphologyEx(src= processed, op= cv2.MORPH_CLOSE, kernel=(3,3),iterations=1)
 
     
     processed = cv2.rotate(src= processed , rotateCode= cv2.ROTATE_90_CLOCKWISE)
         
     processed = cv2.dilate(src= processed,kernel=(3,3),iterations=iteration)
-    processed = cv2.morphologyEx(src= processed, op= cv2.MORPH_CLOSE, kernel=(3,3),iterations=iteration)
+    #processed = cv2.morphologyEx(src= processed, op= cv2.MORPH_CLOSE, kernel=(3,3),iterations=iteration)
         
     processed = cv2.rotate(src= processed , rotateCode= cv2.ROTATE_90_COUNTERCLOCKWISE )
 

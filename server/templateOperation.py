@@ -97,8 +97,7 @@ def templateMatching(image : np.ndarray , template : np.ndarray , wordsProperty 
     """
 
     foundWords = []
-    threshold = 0.05
-    num = 6
+    
     
 
     for wp in wordsProperty:

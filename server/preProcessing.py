@@ -59,6 +59,8 @@ def averageHeightOfLetters(image : np.ndarray):
     currentHeight = 0
     NumberOfLine = 0
     imageShape = image.shape
+    heightAtWhichLineStarts = 0
+    tallestText = (0,0)
         
     sumOfCurrentPixel = 0
     sumOfNextPixel = np.sum(image[0])
@@ -77,13 +79,22 @@ def averageHeightOfLetters(image : np.ndarray):
                 continue
             case (True, False):
                 NumberOfLine += 1
+                heightAtWhichLineStarts =i
+
             case (False, True):
                 currentHeight += 1
+
                 if NumberOfLine == 0:
                     print("Warning: Detected line end before start — skipping.")
                     continue
                 averageHeight = ((averageHeight * (NumberOfLine - 1)) + currentHeight) / NumberOfLine
+                
+                #logic for tallest text 
+                if((tallestText[1]-tallestText[0])<(i-heightAtWhichLineStarts)):
+                    tallestText = (heightAtWhichLineStarts,i)
+                                
                 currentHeight = 0
+            
             case (False, False):
                 currentHeight += 1
             case _:
@@ -93,7 +104,7 @@ def averageHeightOfLetters(image : np.ndarray):
         print("Warning: No text lines detected.")
         return 0  # or None if you want to force error handling
 
-    return int(averageHeight)
+    return (int(averageHeight),tallestText)
 
 
 def requiredNumberOfIterations(averageGap : int):
@@ -107,8 +118,6 @@ def requiredNumberOfIterations(averageGap : int):
     random_number = random.uniform(0.6, 0.8)
 
     temp = averageGap * random_number
-
-    return np.round(temp).astype(int)
 
     return np.round(temp).astype(int)
 

@@ -122,4 +122,8 @@ def requiredNumberOfIterations(averageGap : int):
     return np.round(temp).astype(int)
 
 
-    
+
+def averageGapOfLetter(image :np.ndarray):
+    tallestLineImage_Rotated= cv2.rotate(src= image , rotateCode= cv2.ROTATE_90_CLOCKWISE)
+    averageGap_Pixel,_= averageHeightOfLetters(image=tallestLineImage_Rotated)
+    return averageGap_Pixel 

@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import random
 
 def backgroundBlackForegroundWhite(image: np.ndarray ):
     """
@@ -95,14 +96,20 @@ def averageHeightOfLetters(image : np.ndarray):
     return int(averageHeight)
 
 
-def requiredNumberOfIterations(x : int):
+def requiredNumberOfIterations(averageGap : int):
     """
-    where x = height of text in pixel
+     where x = average gap between characters in pixel
 
     this was derived from curve fitting of data extracted from samples.
-    """ 
-    temp  = 0.0001929 *x**2 + 0.1286 *x - 0.4234
-    
+    # random number to account for any unforseen situation
+    """  
+     #temp  = 0.5030 * averageGap + -0.3333
+    random_number = random.uniform(0.6, 0.8)
+
+    temp = averageGap * random_number
+
+    return np.round(temp).astype(int)
+
     return np.round(temp).astype(int)
 
 

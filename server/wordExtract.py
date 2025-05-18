@@ -151,7 +151,10 @@ def shiftDueToSmudging( iteration :int):
     """
     it calculates how much shifting should be done to correct the errors of smudging
     """
-    return int(np.round(1.6 * iteration))
+    if(iteration >= 1 ):
+        return int(iteration/2)
+    else:
+        return 0
 
 
 

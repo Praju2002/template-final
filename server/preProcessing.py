@@ -69,8 +69,12 @@ def averageHeightOfLetters(image : np.ndarray):
         sumOfCurrentPixel = sumOfNextPixel
         sumOfNextPixel = np.sum(image[i + 1])
 
-        currentPixelIs0 = sumOfCurrentPixel == 0
-        nextPixelIs0 = sumOfNextPixel == 0
+        # why? it ran into the Unexpected case in line detection so... removed
+        # currentPixelIs0 = sumOfCurrentPixel == 0
+        # nextPixelIs0 = sumOfNextPixel == 0
+
+        currentPixelIs0 = True if(sumOfCurrentPixel ==0 )else False
+        nextPixelIs0 = True if(sumOfNextPixel == 0 )else False
 
         typeCase = (currentPixelIs0, nextPixelIs0)
 

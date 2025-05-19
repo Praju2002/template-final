@@ -1,6 +1,22 @@
 import numpy as np
 import cv2
+def extract_sift_features(image):
+    if len(image.shape) == 3:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = image
+    sift = cv2.SIFT_create()
+    keypoints, descriptors = sift.detectAndCompute(gray, None)
+    return keypoints, descriptors
 
+def match_sift_features(des1, des2, ratio=0.75):
+    bf = cv2.BFMatcher()
+    matches = bf.knnMatch(des1, des2, k=2)
+    good_matches = []
+    for m, n in matches:
+        if m.distance < ratio * n.distance:
+            good_matches.append(m)
+    return good_matches
 def wordExtract(image : np.ndarray,averageHeight : int, smudgedIteration : int):
     """
     it takes image ( smudged image preferred) and figures out the words are in the image
@@ -184,5 +200,4 @@ def shiftDueToSmudging( iteration :int):
 
 
                     
-
 

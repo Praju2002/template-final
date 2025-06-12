@@ -1,203 +1,156 @@
 import numpy as np
 import cv2
-def extract_sift_features(image):
-    if len(image.shape) == 3:
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    else:
-        gray = image
-    sift = cv2.SIFT_create()
-    keypoints, descriptors = sift.detectAndCompute(gray, None)
-    return keypoints, descriptors
 
-def match_sift_features(des1, des2, ratio=0.75):
-    bf = cv2.BFMatcher()
-    matches = bf.knnMatch(des1, des2, k=2)
-    good_matches = []
-    for m, n in matches:
-        if m.distance < ratio * n.distance:
-            good_matches.append(m)
-    return good_matches
 def wordExtract(image : np.ndarray,averageHeight : int, smudgedIteration : int):
     """
-    it takes image ( smudged image preferred) and figures out the words are in the image
+    It takes an image (smudged image preferred) and figures out the words in it
+    using connected components analysis for efficiency.
 
-    average height of text is to verify weather or not a group of pixels are a word
-
-    smudged iteration is used to figure out how much shifting is required
-
+    average height of text is to verify whether or not a group of pixels are a word.
+    smudged iteration is used to figure out how much shifting is required.
     """
-    imageShape = image.shape
-    pixelCoordinate = []
+    # Ensure image is binary (0 or 255) for connectedComponentsWithStats.
+    # Assumes the input 'image' is already pre-processed to have a black background and white foreground.
+    
+    # Use cv2.connectedComponentsWithStats for efficient word extraction.
+    # Connectivity 8 means it considers 8 neighbors (like your original getNewNeighbors logic).
+    # cv2.CV_32S is the output label type.
+    num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(image, 8, cv2.CV_32S)
+    
     wordsProperty = []
-    whitePixel = 255
     shift = shiftDueToSmudging(iteration=smudgedIteration)
 
-    #loads all the pixels coordinate of image into pixel coordinate and pop one after another 
-    for h in range(1, imageShape[0]-1):
-        for w in range(1, imageShape[1]-1):
-            pixelCoordinate.append((h,w))
-    
+    # Loop through all connected components (skip background, which is typically label 0).
+    for i in range(1, num_labels):
+        # Extract bounding box statistics directly from 'stats' array.
+        x = stats[i, cv2.CC_STAT_LEFT]   # Leftmost x coordinate of the bounding box
+        y = stats[i, cv2.CC_STAT_TOP]    # Topmost y coordinate of the bounding box
+        w = stats[i, cv2.CC_STAT_WIDTH]  # Width of the bounding box
+        h = stats[i, cv2.CC_STAT_HEIGHT] # Height of the bounding box
 
-    while(len(pixelCoordinate)>0):
-        currentPixel = pixelCoordinate.pop()
-        if(image[currentPixel[0]][currentPixel[1]] == whitePixel): # found 1st pixel of word
-            print("word might be in " , currentPixel)
-            #remove from total pixel list and add to white pixel ine list
-            whitePixelList = []
-            neighborList = []
-            
-            whitePixelList.append(currentPixel)
-            neighborList = getNewNeighbors(coordinate= currentPixel , 
-                                                     pixelCoordinate=pixelCoordinate,
-                                                     currentNeighbor=neighborList)
-            
-        else:#found a background pixel
-            continue
-
-        #one the pixel of word is detected so gather all the white pixels
-        while(len(neighborList) > 0):
-            currentPixel = neighborList.pop()
-            if(image[currentPixel[0]][currentPixel[1]] == whitePixel): # found another of word
-                #remove from total pixel list and add to white pixel ine list                
-                whitePixelList.append(pixelCoordinate.pop(pixelCoordinate.index(currentPixel)))
-                #as Some pixels are already in
-                neighborList.extend (getNewNeighbors(coordinate= currentPixel , 
-                                                     pixelCoordinate=pixelCoordinate,
-                                                     currentNeighbor=neighborList))
-                
-            else:
-                #found a background pixel
-                 pixelCoordinate.pop(pixelCoordinate.index(currentPixel))
-
-        """
-        #all of pixels of word has been collected in white pixels
-            
-        we now have list of tuples of adjacent white pixels so now we calculate
-        the top left corner of the box in which the word will fit 
-        height and width of the word in pixels
-        """
-        tempWordProperty = wordPropertyExtraction(pixelList = whitePixelList,shift=shift)
-          
-        #check if the word is valid or not
-        # if true then pixel is word else not  word 
-        if(wordVerification(tempWordProperty , averageHeight=averageHeight)):
-            print("Verified")
+        # Construct the word property tuple: ((left,top),(right,bottom)).
+        # Apply the 'shift' correction to the x-coordinates (left and right).
+        # x + w gives the coordinate *after* the last pixel, so it's the right boundary.
+        tempWordProperty = ((x - shift, y), (x + w - shift, y + h))
+        
+        # Use your existing wordVerification logic to filter out noise or unwanted components.
+        if wordVerification(tempWordProperty, averageHeight=averageHeight):
             wordsProperty.append(tempWordProperty)
-        else:
-            print("rejected")
-            continue
-    
+            
     return wordsProperty
 
 
-def getNewNeighbors(coordinate : tuple, pixelCoordinate : list , currentNeighbor : list):
+# def wordVerification(wordProperty : tuple,averageHeight : int):
     """
-    it get the coordinates the current pixels position and initiates the 8 neighbors of the pixels and the filters out
-    all the pixels that are already dealt with and are not is current neighbor list
-    """
-    xcord = coordinate[0]
-    ycord = coordinate[1]
-    cleanNeighbor = [] 
-                
-    #8 neighbors of current pixels
-    allNeighbor = [
-    (x, y)
-    for x in range(xcord - 1, xcord + 2)
-    for y in range(ycord - 1, ycord + 2)
-    if (x, y) != (xcord, ycord)]
+    We receive the word property as ((left,top),(right,bottom)).
 
-    for neighbor in allNeighbor:
-        if(pixelCoordinate.__contains__(neighbor) and not currentNeighbor.__contains__(neighbor)):
-            cleanNeighbor.append(neighbor)
-    
-    return cleanNeighbor
-    
+    This function helps to eliminate small noise that passed through
+    pre-processing and prevent false word detections.
 
-def wordPropertyExtraction(pixelList : list,shift : int):
-    """
-    takes a list of tuples as coordinates and returns positional property of the word in the format
-    (left,top),(right,bottom)
-    
-    note : it also takes account for shifting of pixels due to smudging and corrects it
-    
-    """
-    x= []
-    y = []
-    for pix in pixelList:
-        x.append(pix[1])
-        y.append(pix[0])
-    
-    left = min(x)
-    right = max(x)
-    top = min(y)
-    bottom = max(y)
-
-    return((left-shift,top),(right-shift,bottom))
-
-
-def wordVerification(wordProperty : tuple,averageHeight : int):
-    """
-    we receive the word property as
-    ((left,top),(right,bottom))
-
-    this is relative operations but this helps to eliminate any small noise that
-    pass thought the pre processing and help us prevent any false words
-
-    for a group of pixels to be considered a word 
-    if the width and height is less than minHeight = averageHeight *0.3
-    if the area covered by pixel is less than 0.2 where area =  minHeight**2
+    For a group of pixels to be considered a word:
+    - Its area (width * height) must not be too small.
+    - It must not be disproportionately thin (either very tall and narrow, or very short and wide).
     """
     minHeight = np.round(averageHeight * 0.5)
     minArea = minHeight**2
     width = (wordProperty[1][0]- wordProperty[0][0])
     height = (wordProperty[1][1]-wordProperty[0][1])
 
-    if(height* width < minArea):
+    # Ensure width and height are positive to avoid errors in calculations.
+    if width <= 0 or height <= 0:
         return False
-    elif (height > minHeight and width < minHeight ):
+
+    if(height * width < minArea):
         return False
-    elif (height < minHeight and width > minHeight ):
+    elif (height > minHeight and width < minHeight ): # Filters out thin vertical lines
+        return False
+    elif (height < minHeight and width > minHeight ): # Filters out thin horizontal lines
         return False
     else:
         return True
-    
 
+    aspect_ratio = height / width
+
+    # Max aspect ratio: too tall and thin for a word (e.g., a vertical line or merged blob)
+    # Tune MAX_HEIGHT_WIDTH_RATIO (e.g., 3.0 to 7.0). Start with 5.0, then try 4.0 or 3.0 if still an issue.
+    MAX_HEIGHT_WIDTH_RATIO = 5.0 
+    if aspect_ratio > MAX_HEIGHT_WIDTH_RATIO: 
+        # print(f"[DEBUG] Filtered: Too tall (aspect_ratio={aspect_ratio:.2f}) for {wordProperty}") # Optional: for debugging
+        return False
+
+    # Min aspect ratio: too short and wide for a word (e.g., a horizontal splatter)
+    # This is less likely the cause of your current problem, but good for completeness.
+    MIN_HEIGHT_WIDTH_RATIO = 0.1 
+    if aspect_ratio < MIN_HEIGHT_WIDTH_RATIO and width > (2 * averageHeight): # Only filter if it's also relatively wide
+        # print(f"[DEBUG] Filtered: Too flat (aspect_ratio={aspect_ratio:.2f}) for {wordProperty}") # Optional: for debugging
+        return False
+    # --- END NEW IMPROVEMENT ---
+
+    # Original checks (can keep as additional safeguard if desired, but aspect ratio is more general)
+    # These are also good for catching extreme thin lines.
+    if (height > (2 * averageHeight) and width < (averageHeight * 0.5) ): # Very tall and very narrow line
+        return False
+    elif (width > (3 * averageHeight) and height < (averageHeight * 0.5) ): # Very wide and very short line
+        return False
+    else:
+        return True
+def wordVerification(wordProperty : tuple, averageHeight : int):
+    """
+    We receive the word property as ((left,top),(right,bottom)).
+
+    This function helps to eliminate small noise that passed through
+    pre-processing and prevent false word detections.
+
+    For a group of pixels to be considered a word:
+    - Its area (width * height) must not be too small.
+    - It must not be disproportionately thin (either very tall and narrow, or very short and wide).
+    """
+    minHeight = np.round(averageHeight * 0.5)
+    minArea = minHeight**2
+    width = (wordProperty[1][0] - wordProperty[0][0])
+    height = (wordProperty[1][1] - wordProperty[0][1])
+
+    # Ensure width and height are positive to avoid errors in calculations.
+    if width <= 0 or height <= 0:
+        return False
+
+    area = height * width
+    if area < minArea:
+        return False
+
+    # --- CRITICAL NEW IMPROVEMENT: Explicit Aspect Ratio Filtering ---
+    aspect_ratio = height / width
+    
+    # Max aspect ratio: Filters out components that are too tall/thin.
+    # This directly addresses the "tall green box" issue.
+    # A typical word has an aspect ratio around 0.2 to 2.0. If it's too high,
+    # it likely means characters or lines have merged vertically.
+    # You might need to tune this value (e.g., from 5.0 down to 3.0 or 2.5) based on
+    # how tall your Nepali words typically appear relative to their width.
+    MAX_HEIGHT_WIDTH_RATIO = 5.0 
+    if aspect_ratio > MAX_HEIGHT_WIDTH_RATIO: 
+        return False
+    
+    # Min aspect ratio: Filters out components that are too short/wide.
+    # This prevents identifying horizontal "splatters" or merged lines as words.
+    MIN_HEIGHT_WIDTH_RATIO = 0.1 
+    if aspect_ratio < MIN_HEIGHT_WIDTH_RATIO and width > (2 * averageHeight): 
+        return False
+    # --- END CRITICAL NEW IMPROVEMENT ---
+
+    # Original checks (can keep as additional safeguard if desired)
+    if (height > (2 * averageHeight) and width < (averageHeight * 0.5) ): 
+        return False
+    elif (width > (3 * averageHeight) and height < (averageHeight * 0.5) ): 
+        return False
+    else:
+        return True
 
 def shiftDueToSmudging( iteration :int):
     """
-    it calculates how much shifting should be done to correct the errors of smudging
+    Calculates how much shifting should be done to correct the errors of smudging.
     """
     if(iteration >= 1 ):
         return int(iteration/2)
     else:
         return 0
-
-
-
-
-
-
-
-                        
-                
-
-                    
-                
-
-               
-
-                
-
-                
-
-
-
-                
-
-
-                
-
-
-
-                    
-

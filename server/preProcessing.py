@@ -106,28 +106,42 @@ def averageHeightOfLetters(image : np.ndarray):
 
     if NumberOfLine == 0:
         print("Warning: No text lines detected.")
-        return 0  # or None if you want to force error handling
+        return 0, (0,0)  # Changed return to match expected tuple (averageHeight, tallestText)
 
     return (int(averageHeight),tallestText)
 
 
+# def requiredNumberOfIterations(averageGap : int):
+#     """
+#      where x = average gap between characters in pixel
+
+#     this was derived from curve fitting of data extracted from samples.
+#     # random number to account for any unforseen situation
+#     """  
+#      #temp  = 0.5030 * averageGap + -0.3333
+#     # random_number = random.uniform(0.6, 0.8)
+#     random_number=0.7
+#     temp = averageGap * random_number
+
+#     return np.round(temp).astype(int)
 def requiredNumberOfIterations(averageGap : int):
     """
-     where x = average gap between characters in pixel
+    Calculates the required number of smudging iterations based on the average gap between characters.
+    This formula is derived from curve fitting of sample data.
+    """
+    # Use your derived linear formula
+    # Ensure averageGap is treated as a float for calculation if necessary, though int usually works
+    temp = 0.5 * averageGap - 0.3333 
 
-    this was derived from curve fitting of data extracted from samples.
-    # random number to account for any unforseen situation
-    """  
-     #temp  = 0.5030 * averageGap + -0.3333
-    random_number = random.uniform(0.6, 0.8)
-
-    temp = averageGap * random_number
-
-    return np.round(temp).astype(int)
+    # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
+    # This prevents 'temp' from being too low for very small averageGaps, which might happen with very large fonts
+    min_iterations = 2 # Or 1, depending on minimum smudging needed
+    
+    return max(min_iterations, np.round(temp).astype(int))
 
 
 
 def averageGapOfLetter(image :np.ndarray):
     tallestLineImage_Rotated= cv2.rotate(src= image , rotateCode= cv2.ROTATE_90_CLOCKWISE)
     averageGap_Pixel,_= averageHeightOfLetters(image=tallestLineImage_Rotated)
-    return averageGap_Pixel 
+    return averageGap_Pixel

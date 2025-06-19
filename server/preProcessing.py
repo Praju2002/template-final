@@ -131,7 +131,7 @@ def requiredNumberOfIterations(averageGap : int):
     """
     # Use your derived linear formula
     # Ensure averageGap is treated as a float for calculation if necessary, though int usually works
-    temp = 0.5 * averageGap - 0.3333 
+    temp = 0.505 * averageGap - 0.3333 
 
     # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
     # This prevents 'temp' from being too low for very small averageGaps, which might happen with very large fonts

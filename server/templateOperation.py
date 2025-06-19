@@ -1,56 +1,18 @@
-# File: templateOperation.py
-
 import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont  
 import preProcessing as pp
 import wordExtract as we
 
-# --- SIFT Feature Extraction ---
-def extract_sift_features(img: np.ndarray):
-    """Extracts SIFT keypoints and descriptors from an image."""
-    # Ensure image is grayscale and 8-bit unsigned for SIFT
-    if len(img.shape) == 3:
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    else:
-        img_gray = img
-    
-    img_gray = img_gray.astype(np.uint8) # Explicitly cast to uint8
+# Minimum number of good matches required for SIFT (used as simple count now)
+MIN_MATCH_COUNT = 7 
 
-    sift = cv2.SIFT_create()
-    kp, des = sift.detectAndCompute(img_gray, None)
-    return kp, des
-
-# --- SIFT Feature Matching ---
-def match_sift_features(des_template, des_candidate):
-    """
-    Matches SIFT descriptors using BFMatcher and Lowe's Ratio Test.
-    des_template: Descriptors from template (query)
-    des_candidate: Descriptors from candidate image (train)
-    """
-    if des_template is None or des_candidate is None:
-        return [] # Return empty list if no descriptors
-
-    bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=False)
-    matches = bf.knnMatch(des_template, des_candidate, k=2)
-
-    good_matches = []
-    # Apply Lowe's Ratio Test
-    for pair in matches:
-        # Ensure there are two matches (m and n) to unpack
-        if len(pair) == 2:
-            m, n = pair
-            if m.distance < 0.75 * n.distance: # Lower value for stricter matching (e.g., 0.7)
-                good_matches.append(m)
-    return good_matches
-
-# --- Template Creation (from your existing code) ---
 def createTemplate(word: str, fontSize: int):
     """
     Create a template image for the given word with specified font size.
     """
     def is_nepali(text):
-        return any('\u0900' <= ch <= '\u097F' for ch in text)
+        return any('\u0900' <= ch <= '\u097F' for ch in text) # Corrected 'ch' to 'text'
 
     font_path = "./fonts/nepali.TTF" if is_nepali(word) else "./fonts/arial.TTF"
     print(f"[DEBUG] Font path being used: {font_path}")
@@ -77,6 +39,11 @@ def createTemplate(word: str, fontSize: int):
         
         wordImage = np.array(img)
 
+        # For debugging template generation
+        # cv2.imshow("Generated Template", wordImage)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
         _, wordImage = cv2.threshold(wordImage, 127, 255, cv2.THRESH_BINARY)
     except Exception as e:
         print(f"[ERROR] Template image creation failed: {e}")
@@ -87,11 +54,6 @@ def createTemplate(word: str, fontSize: int):
         return None
 
     averageHeight_Pixel, tallestText = pp.averageHeightOfLetters(image=wordImage)
-    
-    if averageHeight_Pixel is None or tallestText is None: # Added check for None from preProcessing
-        print(f"[ERROR] No lines detected in generated template for word: {word}")
-        return None
-
     imageShape = wordImage.shape
 
     # Ensure tallestText indices are valid
@@ -102,13 +64,10 @@ def createTemplate(word: str, fontSize: int):
     
     # Handle cases where tallestLineImage might be empty
     if tallestLineImage.size == 0:
-        print("[WARNING] Tallest line image is empty in createTemplate. Cannot calculate average gap. Using default.")
+        print("[WARNING] Tallest line image is empty. Cannot calculate average gap.")
         averageGap_Pixel = 1 # Default to a small gap to avoid division by zero or errors
     else:
         averageGap_Pixel = pp.averageGapOfLetter(image=tallestLineImage)
-        if averageGap_Pixel is None: # Handle if gap calculation also failed
-            print("[WARNING] averageGapOfLetter returned None in createTemplate. Using default.")
-            averageGap_Pixel = 1
 
     iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel)
 
@@ -117,8 +76,8 @@ def createTemplate(word: str, fontSize: int):
     smudgedImage = pp.prepareImageForWordExtraction(image=wordImage, iteration=iterationNumber)
 
     wordsProperty = we.wordExtract(image=smudgedImage,
-                                   averageHeight=averageHeight_Pixel,
-                                   smudgedIteration=iterationNumber)
+                                  averageHeight=averageHeight_Pixel,
+                                  smudgedIteration=iterationNumber)
     
     # Ensure wordsProperty is not empty before popping
     if not wordsProperty:
@@ -151,26 +110,12 @@ def createTemplate(word: str, fontSize: int):
 
     return wordImage
 
-# --- Helper for putting rectangles (from your existing code) ---
-def wordPropertyTOdirectionConvertor(wordsProperty: tuple):
-    """
-    Convert wordsProperty from ((left, top), (right, bottom)) to (left, top, right, bottom).
-    """
-    return (wordsProperty[0][0], wordsProperty[0][1], wordsProperty[1][0], wordsProperty[1][1])
 
-def putRectangles(image: np.ndarray, wordProperty: list):
+def paddingCalculation(x: int):
     """
-    Draw rectangles on the image for each word property.
-    wordProperty is a list of ((left, top), (right, bottom)) tuples.
+    Calculates padding required for the search word.
     """
-    # Ensure image is mutable if it comes from base64 (might be read-only)
-    if not image.flags['WRITEABLE']:
-        image = image.copy()
-        
-    for leftTop_RightBottom in wordProperty:
-        cv2.rectangle(image, pt1=leftTop_RightBottom[0], pt2=leftTop_RightBottom[1], color=(0, 255, 0), thickness=2) # Green rectangle, thickness 2
-    return image
-
+    return int(np.round(-0.0006503 * x**2 + 0.3229 * x + 0.7658))
 
 def dynamic_threshold(area: int) -> float:
     """
@@ -183,7 +128,7 @@ def dynamic_threshold(area: int) -> float:
 
     # Define min/max thresholds
     min_thresh = 0.4
-    max_thresh = 0.85
+    max_thresh = 0.75
 
     # Use log-scaled range and normalize
     # Adjust constants if the curve needs to shift
@@ -250,103 +195,123 @@ def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
 
     return foundWords
 
-# --- Main Template Matching Function with SIFT and Homography ---
-def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: list, matching_mode: str = "auto"):
+def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple]):
+    """
+    Performs template matching using SIFT features without homography.
+    """
+    foundWords = []
+
+    if template is None or template.size == 0:
+        print("[WARNING] Skipping SIFT matching: template is empty.")
+        return []
+
+    sift = cv2.SIFT_create()
+    bf = cv2.BFMatcher() # Brute-Force Matcher
+
+    # Convert template to grayscale if it's not already and ensure CV_8U
+    if len(template.shape) == 3:
+        template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+    else:
+        template_gray = template
+    template_gray = template_gray.astype(np.uint8) # Explicitly cast to uint8
+
+    # Extract SIFT features from the template once
+    kp_template, des_template = sift.detectAndCompute(template_gray, None)
+    if des_template is None or len(kp_template) < MIN_MATCH_COUNT: # Ensure enough keypoints in template
+        print(f"[WARNING] Not enough descriptors found in template ({len(kp_template)}). Cannot perform SIFT matching.")
+        return []
+
+    for wp in wordsProperty:
+        left, top, right, bottom = wordPropertyTOdirectionConvertor(wp)
+        
+        # Ensure candidate image slice dimensions are valid before slicing
+        if bottom <= top or right <= left:
+            continue
+
+        candidate_img = image[top:bottom, left:right]
+
+        # Explicitly check if the sliced candidate image is empty
+        if candidate_img.size == 0:
+            continue
+
+        # Convert candidate_img to grayscale if it's not already and ensure CV_8U
+        if len(candidate_img.shape) == 3:
+            candidate_img_gray = cv2.cvtColor(candidate_img, cv2.COLOR_BGR2GRAY)
+        else:
+            candidate_img_gray = candidate_img
+        candidate_img_gray = candidate_img_gray.astype(np.uint8) # Explicitly cast to uint8
+
+        kp_candidate, des_candidate = sift.detectAndCompute(candidate_img_gray, None)
+
+        if des_candidate is None or len(kp_candidate) < MIN_MATCH_COUNT: # Ensure enough keypoints in candidate
+            continue
+
+        try:
+            matches = bf.knnMatch(des_template, des_candidate, k=2)
+        except cv2.error as e:
+            # This can happen if one of the descriptor sets is empty after filtering
+            continue
+
+        # Apply ratio test
+        good_matches = []
+        for m, n in matches:
+            if m.distance < 0.75 * n.distance: # Ratio test as per Lowe's paper
+                good_matches.append(m)
+
+        # Decision based solely on the number of good matches (no homography)
+        if len(good_matches) >= MIN_MATCH_COUNT: # Use MIN_MATCH_COUNT for simple good match count
+            foundWords.append(wp)
+            # print(f"[DEBUG] SIFT Match Found for {wp} with {len(good_matches)} good matches.")
+
+    return foundWords
+
+def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple], matching_mode: str = "auto"):
     """
     Performs template matching based on the specified mode.
     'auto' attempts to determine if text is printed or varied.
     'TM_SQDIFF_NORMED' uses standard template matching.
     'SIFT' uses SIFT feature matching with homography.
     """
-    MIN_MATCH_COUNT_SIFT = 7 # Minimum number of good matches for initial SIFT consideration (can be tuned)
-    MIN_INLIER_COUNT = 4 # Minimum number of inliers required for a valid homography (typically 4 or more)
-
     if template is None or template.size == 0:
-        print("[WARNING] Template is empty or invalid. Skipping all matching operations.")
+        print("[WARNING] Template is empty. Skipping all matching operations.")
         return []
 
-    # Extract SIFT features from the template once
-    kp_template, des_template = extract_sift_features(template)
-    if des_template is None or len(kp_template) < MIN_MATCH_COUNT_SIFT:
-        print(f"[WARN] Not enough SIFT features in template for robust matching (found {len(kp_template)}).")
-        # If template itself doesn't have enough features, SIFT won't work well.
-        # Fallback to TM_SQDIFF_NORMED if SIFT is requested but template is poor.
-        if matching_mode == "SIFT":
-            print("[INFO] Falling back to TM_SQDIFF_NORMED due to insufficient template SIFT features.")
-            return _tm_sqdiff_normed_matching(image, template, wordsProperty)
-        # For auto mode, it will try TM_SQDIFF_NORMED anyway
-        # For other modes or if still no features after fallback, return empty.
-        return []
-
-    foundWords = []
-
-    for wp in wordsProperty:
-        left, top = wp[0]
-        right, bottom = wp[1]
-
-        # Ensure valid coordinates for slicing
-        if right <= left or bottom <= top:
-            print(f"[WARN] Invalid word property coordinates: {wp}. Skipping.")
-            continue
-
-        # Slice candidate image region from the main image
-        candidate_img = image[top:bottom, left:right]
+    if matching_mode == "TM_SQDIFF_NORMED":
+        print("[INFO] Using TM_SQDIFF_NORMED for template matching.")
+        return _tm_sqdiff_normed_matching(image, template, wordsProperty)
+    elif matching_mode == "SIFT":
+        print("[INFO] Using SIFT for template matching.")
+        return _sift_template_matching(image, template, wordsProperty)
+    elif matching_mode == "auto":
+        print("[INFO] Auto mode: Attempting TM_SQDIFF_NORMED first.")
+        found = _tm_sqdiff_normed_matching(image, template, wordsProperty)
         
-        if candidate_img is None or candidate_img.size == 0:
-            print(f"[WARN] Candidate image region is empty for {wp}. Skipping.")
-            continue
-
-        # Extract SIFT features from candidate region
-        kp_candidate, des_candidate = extract_sift_features(candidate_img)
-        if des_candidate is None:
-            print(f"[DEBUG] No descriptors in candidate region {wp}. Skipping.")
-            continue
-
-        # Match features between template and candidate
-        good_matches = match_sift_features(des_template, des_candidate)
-
-        # Check if enough initial good matches are found
-        if len(good_matches) > MIN_MATCH_COUNT_SIFT:
-            # Extract locations of matched keypoints for homography calculation
-            src_pts = np.float32([ kp_template[m.queryIdx].pt for m in good_matches ]).reshape(-1,1,2)
-            dst_pts = np.float32([ kp_candidate[m.trainIdx].pt for m in good_matches ]).reshape(-1,1,2)
-
-            # Find Homography using RANSAC (RANdom SAmple Consensus)
-            M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0) 
-
-            if M is not None and mask is not None:
-                # Get the number of inliers (good matches that fit the homography)
-                matches_mask = mask.ravel().tolist()
-                num_inliers = sum(matches_mask) # Count the True values in the mask
-
-                # Verify if there are enough inliers to consider it a valid match
-                if num_inliers >= MIN_INLIER_COUNT:
-                    print(f"[INFO] Match found with {num_inliers} inliers for word property {wp}")
-                    
-                    # Transform the corners of the template to get the detected object's bounding box in the candidate image
-                    h,w = template.shape[:2] # Ensure we get height and width from the template
-                    pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-                    dst = cv2.perspectiveTransform(pts,M)
-
-                    # Get the min/max coordinates of the transformed rectangle
-                    # Add the offset of the candidate image to get coordinates relative to the main image
-                    min_x = int(np.min(dst[:,0,0]) + left)
-                    max_x = int(np.max(dst[:,0,0]) + left)
-                    min_y = int(np.min(dst[:,0,1]) + top)
-                    max_y = int(np.max(dst[:,0,1]) + top)
-
-                    # Append the refined bounding box (relative to original image)
-                    foundWords.append(((min_x, min_y), (max_x, max_y)))
-                else:
-                    print(f"[DEBUG] Not enough inliers ({num_inliers}) for {wp}.")
-            else:
-                print(f"[DEBUG] No robust homography found for {wp}.")
-        else:
-            print(f"[DEBUG] Not enough initial good matches ({len(good_matches)}) for {wp}.")
-
-    # Fallback to TM_SQDIFF_NORMED if SIFT (with homography) didn't find matches in 'auto' mode
-    if matching_mode == "auto" and not foundWords:
-        print("[INFO] No matches found with SIFT (with homography), trying TM_SQDIFF_NORMED as fallback.")
-        foundWords = _tm_sqdiff_normed_matching(image, template, wordsProperty)
+        if not found:
+            print("[INFO] No matches found with TM_SQDIFF_NORMED, trying SIFT.")
+            found = _sift_template_matching(image, template, wordsProperty)
         
-    return foundWords
+        return found
+    else:
+        print(f"[ERROR] Invalid matching_mode: {matching_mode}. Defaulting to TM_SQDIFF_NORMED.")
+        return _tm_sqdiff_normed_matching(image, template, wordsProperty)
+
+
+def wordPropertyTOdirectionConvertor(wordsProperty: tuple):
+    """
+    Convert wordsProperty from ((left, top), (right, bottom)) to (left, top, right, bottom).
+    """
+    return (wordsProperty[0][0], wordsProperty[0][1], wordsProperty[1][0], wordsProperty[1][1])
+
+
+def putRectangles(image: np.ndarray, wordProperty: list):
+    """
+    Draw rectangles on the image for each word property.
+    """
+    # Ensure image is mutable if it comes from base64 (might be read-only)
+    if not image.flags['WRITEABLE']:
+        image = image.copy()
+        
+    for leftTop_RightBottom in wordProperty:
+        cv2.rectangle(image, pt1=leftTop_RightBottom[0], pt2=leftTop_RightBottom[1], color=(0, 255, 0), thickness=1)
+
+    return image

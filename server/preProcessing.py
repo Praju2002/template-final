@@ -124,20 +124,28 @@ def averageHeightOfLetters(image : np.ndarray):
 #     temp = averageGap * random_number
 
 #     return np.round(temp).astype(int)
-def requiredNumberOfIterations(averageGap : int):
+def requiredNumberOfIterations(averageGap : int, is_nepali_text: bool = False):
     """
     Calculates the required number of smudging iterations based on the average gap between characters.
     This formula is derived from curve fitting of sample data.
     """
-    # Use your derived linear formula
-    # Ensure averageGap is treated as a float for calculation if necessary, though int usually works
-    temp = 0.505 * averageGap - 0.3333 
+    # Debug print at the beginning to see what's received
+    print(f"[DEBUG] requiredNumberOfIterations: is_nepali_text received as {is_nepali_text} for averageGap {averageGap}.")
 
-    # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
-    # This prevents 'temp' from being too low for very small averageGaps, which might happen with very large fonts
-    min_iterations = 2 # Or 1, depending on minimum smudging needed
-    
-    return max(min_iterations, np.round(temp).astype(int))
+    if is_nepali_text:
+        print(f"[DEBUG] Nepali text detected. Returning 0 iterations for no smudging.")
+        return 0 
+    else:
+        print(f"[DEBUG] Non-Nepali text detected. Calculating iterations.")
+        # Use your derived linear formula for non-Nepali (e.g., English) text
+        temp = 0.505 * averageGap - 0.3333 
+
+        # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
+        min_iterations = 2 # Or 1, depending on minimum smudging needed
+        
+        calculated_iterations = max(min_iterations, np.round(temp).astype(int))
+        print(f"[DEBUG] Calculated iterations for non-Nepali: {calculated_iterations}")
+        return calculated_iterations
 
 
 

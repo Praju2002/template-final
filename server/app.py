@@ -37,7 +37,8 @@ def upload():
     greyImage = cv2.imdecode(buf=img_array , flags=cv2.IMREAD_GRAYSCALE )
     if greyImage is None:
         return jsonify({"error": "Could not decode grayscale image."}), 400
-
+    word_is_nepali_for_overall_processing = tempOp.is_nepali(word)
+    print(f"[DEBUG APP] The search word '{word}' indicates Nepali content: {word_is_nepali_for_overall_processing}") # <--- DEBUG PRINT
 
     # --- View 1: Image after B/W conversion ---
     image = pp.backgroundBlackForegroundWhite(image=greyImage)
@@ -79,7 +80,11 @@ def upload():
         return jsonify({"error": "Could not calculate average gap for text. Image might be too degraded."}), 400
 
 
-    iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel)
+    # iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel)
+    iterationNumber = pp.requiredNumberOfIterations(
+        averageGap=averageGap_Pixel,
+        is_nepali_text=word_is_nepali_for_overall_processing # <--- ADD THIS ARGUMENT
+    )
     print("avg ht, gap and iteration", averageHeight_Pixel, averageGap_Pixel, iterationNumber)
 
 

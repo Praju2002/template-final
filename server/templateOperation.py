@@ -6,15 +6,16 @@ import wordExtract as we
 
 # Minimum number of good matches required for SIFT (used as simple count now)
 MIN_MATCH_COUNT = 7 
-
+def is_nepali(text):
+        return any('\u0900' <= ch <= '\u097F' for ch in text)
 def createTemplate(word: str, fontSize: int):
     """
     Create a template image for the given word with specified font size.
     """
-    def is_nepali(text):
-        return any('\u0900' <= ch <= '\u097F' for ch in text) # Corrected 'ch' to 'text'
+     # Corrected 'ch' to 'text'
+    word_is_nepali = is_nepali(word)
 
-    font_path = "./fonts/nepali.TTF" if is_nepali(word) else "./fonts/arial.TTF"
+    font_path = "./fonts/nepali.TTF" if word_is_nepali else "./fonts/arial.TTF"
     print(f"[DEBUG] Font path being used: {font_path}")
     try:
         # Scale font size, and ensure a minimum size for SIFT to work effectively
@@ -69,7 +70,7 @@ def createTemplate(word: str, fontSize: int):
     else:
         averageGap_Pixel = pp.averageGapOfLetter(image=tallestLineImage)
 
-    iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel)
+    iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel,is_nepali_text=word_is_nepali)
 
     print(averageHeight_Pixel, averageGap_Pixel, iterationNumber)
 

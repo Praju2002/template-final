@@ -118,27 +118,64 @@ def paddingCalculation(x: int):
     """
     return int(np.round(-0.0006503 * x**2 + 0.3229 * x + 0.7658))
 
-def dynamic_threshold(area: int) -> float:
+# def dynamic_threshold(area: int) -> float:
+#     """
+#     Returns a template matching threshold based on bounding box area.
+#     Smaller area => lower threshold (more strict),
+#     Larger area => higher threshold (more lenient).
+#     """
+#     # Avoid zero or negative areas
+#     area = max(area, 1)
+
+#     # Define min/max thresholds
+#     min_thresh = 0.4
+#     max_thresh = 0.75
+
+#     # Use log-scaled range and normalize
+#     # Adjust constants if the curve needs to shift
+#     scale = (np.log10(area) - 1) / 2.0  # log10(10) -> 0; log10(1000) -> ~1.5
+
+#     # Clamp scale between 0 and 1
+#     scale = max(0.0, min(1.0, scale))
+
+#     return min_thresh + (max_thresh - min_thresh) * scale
+
+
+def dynamic_threshold(height: int , width: int) -> float:
     """
     Returns a template matching threshold based on bounding box area.
     Smaller area => lower threshold (more strict),
     Larger area => higher threshold (more lenient).
     """
     # Avoid zero or negative areas
-    area = max(area, 1)
+
+    numberOfCharacters = width / (0.65 *height)
+
+    numberOfCharacters = max(1, numberOfCharacters)
+
+    print("estimate number of char",numberOfCharacters)
+
 
     # Define min/max thresholds
     min_thresh = 0.4
     max_thresh = 0.75
 
+    log_min = np.log10(1)
+    log_max = np.log10(45)
+    log_val = np.log10(numberOfCharacters)  # Clamp to avoid log(0)
+
+    scale = (log_val - log_min) / (log_max - log_min)
+    scale = max(0.0, min(1.0, scale))  # Clamp to [0, 1]
+
     # Use log-scaled range and normalize
     # Adjust constants if the curve needs to shift
-    scale = (np.log10(area) - 1) / 2.0  # log10(10) -> 0; log10(1000) -> ~1.5
+    #scale = (np.log10(area) - 1) / 2.0  # log10(10) -> 0; log10(1000) -> ~1.5
 
-    # Clamp scale between 0 and 1
-    scale = max(0.0, min(1.0, scale))
+    threshold = min_thresh + (max_thresh - min_thresh) * scale
+    print("theshold ",threshold)
 
-    return min_thresh + (max_thresh - min_thresh) * scale
+    return threshold
+
 
 def normalize(img: np.ndarray) -> np.ndarray:
     """
@@ -157,12 +194,14 @@ def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
     if template is None or template.size == 0:
         print("[WARNING] Skipping TM_SQDIFF_NORMED matching: template is empty.")
         return []
+    
+    heightOfTemplate , widthOfTemplate = template.shape
+    threshold  = dynamic_threshold(heightOfTemplate,widthOfTemplate)
 
     for wp in wordsProperty:
         left, top, right, bottom = wordPropertyTOdirectionConvertor(wp)
         width = right - left
         height = bottom - top
-        area = width * height
 
         # Skip if bounding box is invalid
         if width <= 0 or height <= 0:
@@ -186,9 +225,10 @@ def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
             similarityScore = cv2.matchTemplate(sectionOfImage, scaledTemplate, cv2.TM_SQDIFF_NORMED)
             min_val, _, _, _ = cv2.minMaxLoc(similarityScore)
 
-            threshold = dynamic_threshold(area)
+           
             # print(f"[DEBUG] TM_SQDIFF_NORMED: Area: {area}, Threshold: {threshold:.2f}, Score: {min_val:.2f}")
 
+            print("min value",min_val)    
             if min_val < threshold:
                 foundWords.append(wp)
         # else:

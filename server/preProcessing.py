@@ -60,6 +60,7 @@ def averageHeightOfLetters(image : np.ndarray):
     NumberOfLine = 0
     imageShape = image.shape
     heightAtWhichLineStarts = 0
+    highestNumberOfGap = 0
     tallestText = (0,0)
         
     sumOfCurrentPixel = 0
@@ -94,7 +95,16 @@ def averageHeightOfLetters(image : np.ndarray):
                 averageHeight = ((averageHeight * (NumberOfLine - 1)) + currentHeight) / NumberOfLine
                 
                 #logic for tallest text 
-                if((tallestText[1]-tallestText[0])<(i-heightAtWhichLineStarts)):
+                lineSection = image[heightAtWhichLineStarts:i, 0:imageShape[1]]
+
+                # cv2.imshow("line section", lineSection)
+                # cv2.waitKey(0) 
+                # cv2.destroyAllWindows()
+                NumberOfGap = gapCounter(lineSection)
+
+                print(NumberOfGap)
+                if(highestNumberOfGap < NumberOfGap):
+                    highestNumberOfGap = NumberOfGap
                     tallestText = (heightAtWhichLineStarts,i)
                                 
                 currentHeight = 0
@@ -138,7 +148,7 @@ def requiredNumberOfIterations(averageGap : int, is_nepali_text: bool = False):
     else:
         print(f"[DEBUG] Non-Nepali text detected. Calculating iterations.")
         # Use your derived linear formula for non-Nepali (e.g., English) text
-        temp = 0.505 * averageGap - 0.3333 
+        temp = 0.7 * averageGap - 0.3333 
 
         # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
         min_iterations = 2 # Or 1, depending on minimum smudging needed
@@ -147,6 +157,44 @@ def requiredNumberOfIterations(averageGap : int, is_nepali_text: bool = False):
         print(f"[DEBUG] Calculated iterations for non-Nepali: {calculated_iterations}")
         return calculated_iterations
 
+
+def gapCounter(image : np.ndarray):
+
+    tallestLineImage_Rotated= cv2.rotate(src= image , rotateCode= cv2.ROTATE_90_CLOCKWISE)
+    imageShape = tallestLineImage_Rotated.shape
+    numberOfGap = 0
+        
+    sumOfCurrentPixel = 0
+    sumOfNextPixel = np.sum(tallestLineImage_Rotated[0])
+
+    for i in range(0, imageShape[0] - 1):
+        sumOfCurrentPixel = sumOfNextPixel
+        sumOfNextPixel = np.sum(tallestLineImage_Rotated[i + 1])
+
+        # why? it ran into the Unexpected case in line detection so... removed
+        # currentPixelIs0 = sumOfCurrentPixel == 0
+        # nextPixelIs0 = sumOfNextPixel == 0
+
+        currentPixelIs0 = True if(sumOfCurrentPixel ==0 )else False
+        nextPixelIs0 = True if(sumOfNextPixel == 0 )else False
+
+        typeCase = (currentPixelIs0, nextPixelIs0)
+
+        match typeCase:
+            case (True, True):
+                continue
+            case (True, False):
+                continue
+            case (False, True):
+                numberOfGap +=1
+            
+            case (False, False): 
+                continue
+            case _:
+                print("Unexpected case in line detection")
+
+
+    return numberOfGap
 
 
 def averageGapOfLetter(image :np.ndarray):

@@ -51,6 +51,9 @@ def upload():
 
     averageHeight_Pixel, tallestText_coords = pp.averageHeightOfLetters(image=image)
     
+    print("avg ht, gap and iteration", averageHeight_Pixel, tallestText_coords)
+
+
     # --- Robustness Checks for line detection results ---
     if averageHeight_Pixel is None or tallestText_coords is None:
         print("Warning: No valid text lines detected after averageHeightOfLetters. Terminating process.")
@@ -120,7 +123,10 @@ def upload():
     template = tempOp.createTemplate(word=word ,fontSize=averageHeight_Pixel)
     if template is None:
         return jsonify({"error": "Failed to create template for the word. Check font paths or word content."}), 500
-
+    
+    cv2.imshow("4. base template", template)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     print("template has been created \n template matching images")
 
     # Pass matching_mode to the templateMatching function

@@ -256,7 +256,7 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
         # Apply ratio test
         good_matches = []
         for m, n in matches:
-            if m.distance < 0.75 * n.distance: # Ratio test as per Lowe's paper
+            if m.distance < 0.75* n.distance: # Ratio test as per Lowe's paper
                 good_matches.append(m)
 
         # Decision based solely on the number of good matches (no homography)

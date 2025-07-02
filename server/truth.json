@@ -1,0 +1,8 @@
+[
+  {
+    "image_filename": "test/project sample_page-0011.jpg",
+    "search_word": "outside",
+    "ground_truth_boxes": [ [414,204,505,231],[557,309,647,335]]
+  }
+  
+]

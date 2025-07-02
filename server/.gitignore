@@ -15,4 +15,6 @@ venv/
 # VSCode and PyCharm settings (optional)
 .vscode/
 .idea/
-uploads/
+server/uploads/
+server/test/
+server/results/

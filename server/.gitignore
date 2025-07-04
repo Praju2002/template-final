@@ -18,4 +18,4 @@ venv/
 uploads/
 test/
 results/
-truth.json/
+truth.json

@@ -65,7 +65,7 @@ def upload():
     image = pp.backgroundBlackForegroundWhite(image=greyImage)
     if image is None:
         return jsonify({"error": "Background/Foreground normalization failed."}), 500
-    cv2.imshow("1. Image after B/W conversion", image)
+    # cv2.imshow("1. Image after B/W conversion", image)
     cv2.waitKey(0) 
     cv2.destroyAllWindows()
 
@@ -86,7 +86,7 @@ def upload():
     
     # --- View 2: Tallest Line Image ---
     if tallestLineImage is not None and tallestLineImage.size > 0:
-        cv2.imshow("2. Tallest Line Image (for gap calculation)", tallestLineImage)
+        # cv2.imshow("2. Tallest Line Image (for gap calculation)", tallestLineImage)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
     else:
@@ -113,7 +113,7 @@ def upload():
     smudgedImage = pp.prepareImageForWordExtraction(image=image, iteration=iterationNumber)
     if smudgedImage is None:
         return jsonify({"error": "Image smudging failed, likely due to corrupted or empty image after preprocessing."}), 500
-    cv2.imshow("3. Image after Smudging", smudgedImage)
+    # cv2.imshow("3. Image after Smudging", smudgedImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -132,7 +132,7 @@ def upload():
     if len(wordsProperty) > 0:
         extractedWordsImage = tempOp.putRectangles(image=extractedWordsImage, wordProperty=wordsProperty) 
     
-    cv2.imshow("4. All Extracted Words (Before Matching)", extractedWordsImage)
+    # cv2.imshow("4. All Extracted Words (Before Matching)", extractedWordsImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
@@ -159,7 +159,7 @@ def upload():
                     fontScale=0.6, color=(0,255,0),
                     thickness=2)
     print(foundWords) # This line prints the NumPy types again
-    cv2.imshow("5. Final Detected Words", finalImage)
+    # cv2.imshow("5. Final Detected Words", finalImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

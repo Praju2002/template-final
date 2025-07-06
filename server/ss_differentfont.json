@@ -1,0 +1,409 @@
+[
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0001.jpg",
+    "search_word": "roots",
+    "ground_truth_boxes": [[874, 159, 935, 183]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0002.jpg",
+    "search_word": "was",
+    "ground_truth_boxes": [
+      [767, 486, 818, 500],
+      [595, 813, 646, 828],
+      [930, 970, 981, 985],
+      [931, 1075, 982, 1090],
+      [485, 1233, 536, 1248],
+      [446, 1286, 497, 1301]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0003.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [766, 150, 858, 180],
+      [392, 223, 489, 234],
+      [832, 328, 929, 339]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0004.jpg",
+    "search_word": "masked",
+    "ground_truth_boxes": [
+      [568, 842, 655, 863],
+      [753, 1168, 849, 1188]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0005.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [221, 282, 271, 302],
+      [803, 282, 853, 302],
+      [436, 330, 488, 355],
+      [488, 543, 542, 567],
+      [750, 870, 800, 900],
+      [495, 1295, 543, 1316],
+      [280, 1348, 330, 1368],
+      [500, 1401, 550, 1421]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0006.jpg",
+    "search_word": "seen",
+    "ground_truth_boxes": [[883, 430, 941, 444]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0007.jpg",
+    "search_word": "cobwebbed",
+    "ground_truth_boxes": [[376, 949, 513, 969]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0008.jpg",
+    "search_word": "milky",
+    "ground_truth_boxes": [[509, 1319, 573, 1344]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0009.jpg",
+    "search_word": "to",
+    "ground_truth_boxes": [
+      [223, 216, 249, 234],
+      [608, 216, 634, 234],
+      [968, 961, 995, 980],
+      [615, 1014, 642, 1033],
+      [671, 1066, 697, 1085],
+      [909, 1119, 935, 1138],
+      [614, 1224, 641, 1243],
+      [847, 1434, 873, 1453]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0010.jpg",
+    "search_word": "hello",
+    "ground_truth_boxes": []
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0011.jpg",
+    "search_word": "her",
+    "ground_truth_boxes": [
+      [1036, 318, 1078, 338],
+      [607, 371, 649, 391],
+      [1003, 963, 1043, 982],
+      [583, 1019, 623, 1038],
+      [524, 1075, 564, 1094]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0012.jpg",
+    "search_word": "paler",
+    "ground_truth_boxes": [[410, 1118, 468, 1144]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0013.jpg",
+    "search_word": "fell",
+    "ground_truth_boxes": [
+      [416, 1195, 453, 1215],
+      [333, 1300, 371, 1320]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0014.jpg",
+    "search_word": "moon",
+    "ground_truth_boxes": [[274, 1286, 342, 1301]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0015.jpg",
+    "search_word": "she",
+    "ground_truth_boxes": [[395, 213, 441, 233]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0016.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [223, 539, 277, 558],
+      [1024, 702, 1080, 722],
+      [624, 1123, 681, 1143],
+      [977, 1228, 1034, 1248],
+      [958, 1341, 1016, 1361],
+      [810, 1494, 868, 1514]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0017.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [862, 553, 911, 573],
+      [475, 1351, 524, 1371]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0018.jpg",
+    "search_word": "beyond",
+    "ground_truth_boxes": [
+      [589, 1257, 677, 1282],
+      [830, 1254, 926, 1280]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0019.jpg",
+    "search_word": "compression",
+    "ground_truth_boxes": [
+      [281, 430, 432, 450],
+      [223, 1130, 374, 1150],
+      [223, 1208, 379, 1229],
+      [688, 1362, 845, 1383],
+      [501, 1439, 657, 1460]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0020.jpg",
+    "search_word": "ByteSaver",
+    "ground_truth_boxes": [[225, 245, 353, 271]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0021.jpg",
+    "search_word": "share",
+    "ground_truth_boxes": [[593, 265, 663, 289]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0022.jpg",
+    "search_word": "arms",
+    "ground_truth_boxes": [[362, 540, 426, 559]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0023.jpg",
+    "search_word": "and",
+    "ground_truth_boxes": [
+      [1045, 213, 1092, 233],
+      [647, 266, 694, 286],
+      [648, 319, 695, 339],
+      [738, 373, 781, 392],
+      [486, 485, 529, 504],
+      [779, 541, 822, 560],
+      [653, 652, 700, 672],
+      [1010, 708, 1057, 728],
+      [290, 814, 337, 834],
+      [303, 867, 350, 887],
+      [1045, 919, 1092, 939],
+      [938, 1025, 984, 1045],
+      [798, 1131, 845, 1151],
+      [906, 1183, 953, 1203],
+      [434, 1236, 481, 1256],
+      [1045, 1236, 1092, 1256],
+      [417, 1347, 462, 1366],
+      [309, 1510, 356, 1530]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0024.jpg",
+    "search_word": "morning",
+    "ground_truth_boxes": [
+      [385, 1069, 481, 1093],
+      [438, 1126, 536, 1151]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0025.jpg",
+    "search_word": "would",
+    "ground_truth_boxes": [
+      [720, 266, 792, 286],
+      [919, 319, 992, 339],
+      [866, 484, 939, 503],
+      [558, 593, 631, 612],
+      [666, 1441, 738, 1461]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0026.jpg",
+    "search_word": "were",
+    "ground_truth_boxes": [
+      [686, 1048, 747, 1063],
+      [604, 1100, 665, 1115]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0027.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [[671, 1480, 795, 1505]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0028.jpg",
+    "search_word": "aisle",
+    "ground_truth_boxes": [
+      [601, 1107, 661, 1124],
+      [733, 1113, 786, 1128],
+      [1000, 945, 1066, 967]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0029.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [781, 545, 905, 570],
+      [223, 597, 346, 622]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0030.jpg",
+    "search_word": "growing",
+    "ground_truth_boxes": [[398, 1282, 496, 1310]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0031.jpg",
+    "search_word": "peep",
+    "ground_truth_boxes": [[700, 1177, 757, 1200]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0032.jpg",
+    "search_word": "thing",
+    "ground_truth_boxes": [[576, 1324, 638, 1348]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0033.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [
+      [647, 318, 723, 342],
+      [645, 265, 721, 285],
+      [462, 529, 545, 548],
+      [760, 1123, 821, 1143],
+      [956, 634, 1037, 653]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0034.jpg",
+    "search_word": "aware",
+    "ground_truth_boxes": [[942, 160, 1014, 183]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0035.jpg",
+    "search_word": "where",
+    "ground_truth_boxes": [[602, 994, 677, 1014]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0036.jpg",
+    "search_word": "human",
+    "ground_truth_boxes": [[580, 1447, 650, 1471]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0037.jpg",
+    "search_word": "wider",
+    "ground_truth_boxes": [[318, 389, 385, 413]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0038.jpg",
+    "search_word": "hand",
+    "ground_truth_boxes": [[764, 1153, 824, 1173]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0039.jpg",
+    "search_word": "throat",
+    "ground_truth_boxes": [[342, 636, 415, 659]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0040.jpg",
+    "search_word": "anticipation",
+    "ground_truth_boxes": [[560, 870, 700, 892]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0041.jpg",
+    "search_word": "the",
+    "ground_truth_boxes": [
+      [388, 213, 429, 233],
+      [1050, 213, 1091, 233],
+      [353, 478, 393, 496],
+      [789, 534, 830, 552],
+      [481, 811, 522, 831],
+      [501, 863, 542, 883],
+      [407, 916, 448, 936],
+      [750, 916, 791, 936],
+      [251, 1021, 291, 1041],
+      [736, 1500, 776, 1520]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0042.jpg",
+    "search_word": "highest",
+    "ground_truth_boxes": [[828, 261, 918, 287]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0043.jpg",
+    "search_word": "since",
+    "ground_truth_boxes": [[858, 1414, 922, 1429]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0044.jpg",
+    "search_word": "ignored",
+    "ground_truth_boxes": [[911, 332, 1000, 361]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0045.jpg",
+    "search_word": "about",
+    "ground_truth_boxes": []
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0046.jpg",
+    "search_word": "livestream",
+    "ground_truth_boxes": []
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0047.jpg",
+    "search_word": "existentialist",
+    "ground_truth_boxes": []
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0048.jpg",
+    "search_word": "contained",
+    "ground_truth_boxes": [[468, 704, 583, 730]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0049.jpg",
+    "search_word": "whispered",
+    "ground_truth_boxes": [[601, 371, 728, 390]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0050.jpg",
+    "search_word": "baker",
+    "ground_truth_boxes": [[646, 1406, 719, 1432]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0051.jpg",
+    "search_word": "the",
+    "ground_truth_boxes": [
+      [249, 160, 290, 180],
+      [414, 160, 455, 180],
+      [633, 160, 674, 180],
+      [918, 160, 959, 180],
+      [326, 213, 367, 233],
+      [898, 213, 939, 233],
+      [914, 265, 955, 285],
+      [420, 318, 461, 338],
+      [420, 387, 461, 407],
+      [528, 387, 568, 407],
+      [375, 440, 416, 460],
+      [742, 440, 783, 460],
+      [280, 493, 320, 513],
+      [877, 650, 918, 670],
+      [310, 827, 351, 845],
+      [515, 1106, 556, 1124],
+      [367, 1176, 408, 1196],
+      [979, 1229, 1019, 1249],
+      [708, 1334, 749, 1354],
+      [666, 1456, 707, 1476],
+      [852, 1456, 892, 1476]
+    ]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0052.jpg",
+    "search_word": "across",
+    "ground_truth_boxes": [[542, 738, 620, 760]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0053.jpg",
+    "search_word": "carved",
+    "ground_truth_boxes": [[538, 389, 622, 407]]
+  },
+  {
+    "image_filename": "test/ss_different_font/SCREENSHOT DIFFERENT FONTS_page-0054.jpg",
+    "search_word": "necessary",
+    "ground_truth_boxes": []
+  }
+]

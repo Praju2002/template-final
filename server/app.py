@@ -18,43 +18,33 @@ RESULT_FOLDER = 'results'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
 
-# ==== API Endpoint ====
+def encode_image_to_base64(img):
+    _, buffer = cv2.imencode('.png', img)
+    return base64.b64encode(buffer).decode('utf-8')
+
 @app.route("/upload", methods=["POST"])
 def upload():
-    # Store the FileStorage object
     uploaded_image_file = request.files["image"]
     word = request.form.get("word")
 
     if not uploaded_image_file or not word:
         return jsonify({"error": "Missing image or word"}), 400
 
-    # --- START OF FIX ---
-    # Read the image data INTO A BUFFER ONCE
-    img_data_buffer = uploaded_image_file.read() 
-    img_array = np.frombuffer(img_data_buffer, np.uint8) # Use the buffer here
-    # --- END OF FIX ---
 
-    # Generate a unique filename and save the image using the buffer
+    img_data_buffer = uploaded_image_file.read() 
+    img_array = np.frombuffer(img_data_buffer, np.uint8) 
+
     original_filename = uploaded_image_file.filename
     file_extension = os.path.splitext(original_filename)[1]
     unique_filename = str(uuid.uuid4()) + file_extension
     image_path = os.path.join(UPLOAD_FOLDER, unique_filename)
     
-    # Save the image using the buffer (instead of image_file.save())
-    # You might need to use cv2.imwrite or similar if you want to save from img_array
-    # For now, let's just make sure cv2.imdecode works from the buffer
     
-    # Optional: Save the image if you really need a copy on disk
-    # with open(image_path, 'wb') as f:
-    #     f.write(img_data_buffer)
-
-    # Decode image from the buffer (which is now correctly populated)
     originalImage = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
     
     if originalImage is None:
         return jsonify({"error": "Could not decode color image."}), 400
 
-    # Use the same img_array for grayscale decoding
     greyImage = cv2.imdecode(buf=img_array , flags=cv2.IMREAD_GRAYSCALE )
     if greyImage is None:
         return jsonify({"error": "Could not decode grayscale image."}), 400
@@ -72,7 +62,6 @@ def upload():
 
     averageHeight_Pixel, tallestText_coords = pp.averageHeightOfLetters(image=image)
     
-    # --- Robustness Checks for line detection results ---
     if averageHeight_Pixel is None or tallestText_coords is None:
         print("Warning: No valid text lines detected after averageHeightOfLetters. Terminating process.")
         return jsonify({"error": "Could not detect valid text lines (average height or coordinates missing). Image might be too degraded or blank."}), 400
@@ -104,7 +93,7 @@ def upload():
     # iterationNumber = pp.requiredNumberOfIterations(averageGap=averageGap_Pixel)
     iterationNumber = pp.requiredNumberOfIterations(
         averageGap=averageGap_Pixel,
-        is_nepali_text=word_is_nepali_for_overall_processing # <--- ADD THIS ARGUMENT
+        is_nepali_text=word_is_nepali_for_overall_processing 
     )
     print("avg ht, gap and iteration", averageHeight_Pixel, averageGap_Pixel, iterationNumber)
 
@@ -123,12 +112,12 @@ def upload():
                                    averageHeight=averageHeight_Pixel,
                                    smudgedIteration=iterationNumber)
     
-    if not wordsProperty: # Check if wordsProperty is empty
+    if not wordsProperty:
         print("Warning: No words extracted after word extraction stage.")
         return jsonify({"message": "No words found in the document to match against. Image might be too degraded."}), 200
         
     print(f"Number of words extracted by wordExtract: {len(wordsProperty)}") 
-    extractedWordsImage = originalImage.copy() # Use original color image for drawing
+    extractedWordsImage = originalImage.copy() 
     if len(wordsProperty) > 0:
         extractedWordsImage = tempOp.putRectangles(image=extractedWordsImage, wordProperty=wordsProperty) 
     
@@ -144,13 +133,12 @@ def upload():
 
     print("template has been created \n template matching images")
 
-    # Pass matching_mode to the templateMatching function
     foundWords = tempOp.templateMatching(image=image , template=template , wordsProperty=wordsProperty, matching_mode="auto")
 
-    print(foundWords) # This line prints the NumPy types
+    print(foundWords) 
 
     # --- View 5: Final Detected Words ---
-    finalImage = originalImage.copy() # Use original color image for drawing
+    finalImage = originalImage.copy() 
     if len(foundWords) > 0:
         finalImage = tempOp.putRectangles(image=finalImage, wordProperty=foundWords)
     else:
@@ -158,30 +146,34 @@ def upload():
                     org=(20,30),fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                     fontScale=0.6, color=(0,255,0),
                     thickness=2)
-    print(foundWords) # This line prints the NumPy types again
+    print(foundWords) 
     # cv2.imshow("5. Final Detected Words", finalImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    # Convert final image to base64 for API response
     _, buffer = cv2.imencode('.png', finalImage)
     base64_img = base64.b64encode(buffer).decode('utf-8')
+    
 
-    # --- START OF PREVIOUS CHANGES (np.int32 to int conversion) ---
     cleaned_found_words = []
     for box_pair in foundWords:
-        # Each box_pair is expected to be ((x1, y1), (x2, y2))
         x1, y1 = int(box_pair[0][0]), int(box_pair[0][1])
         x2, y2 = int(box_pair[1][0]), int(box_pair[1][1])
         cleaned_found_words.append(((x1, y1), (x2, y2)))
-    # --- END OF PREVIOUS CHANGES ---
 
-    # Use the cleaned_found_words list and the newly defined unique_filename
+    bw_base64 = encode_image_to_base64(image)
+    smudged_base64 = encode_image_to_base64(smudgedImage)
+    extracted_base64 = encode_image_to_base64(extractedWordsImage)
+    final_base64 = encode_image_to_base64(finalImage)
+
     return jsonify({
         "message": "Image processed successfully",
         "fileName": unique_filename, 
         "foundWords": cleaned_found_words,
-        "image_base64": base64_img
+        "image_base64": final_base64,
+        "bw_image_base64": bw_base64,
+        "smudged_image_base64": smudged_base64,
+        "extracted_image_base64": extracted_base64
     }), 200
 
 

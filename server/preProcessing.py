@@ -94,7 +94,6 @@ def averageHeightOfLetters(image : np.ndarray):
                     continue
                 averageHeight = ((averageHeight * (NumberOfLine - 1)) + currentHeight) / NumberOfLine
                 
-                #logic for tallest text 
                 lineSection = image[heightAtWhichLineStarts:i, 0:imageShape[1]]
 
                 # cv2.imshow("line section", lineSection)
@@ -102,7 +101,6 @@ def averageHeightOfLetters(image : np.ndarray):
                 # cv2.destroyAllWindows()
                 NumberOfGap = gapCounter(lineSection)
 
-                print(NumberOfGap)
                 if(highestNumberOfGap < NumberOfGap):
                     highestNumberOfGap = NumberOfGap
                     tallestText = (heightAtWhichLineStarts,i)
@@ -116,7 +114,7 @@ def averageHeightOfLetters(image : np.ndarray):
 
     if NumberOfLine == 0:
         print("Warning: No text lines detected.")
-        return 0, (0,0)  # Changed return to match expected tuple (averageHeight, tallestText)
+        return 0, (0,0)  
 
     return (int(averageHeight),tallestText)
 
@@ -139,7 +137,6 @@ def requiredNumberOfIterations(averageGap : int, is_nepali_text: bool = False):
     Calculates the required number of smudging iterations based on the average gap between characters.
     This formula is derived from curve fitting of sample data.
     """
-    # Debug print at the beginning to see what's received
     print(f"[DEBUG] requiredNumberOfIterations: is_nepali_text received as {is_nepali_text} for averageGap {averageGap}.")
 
     if is_nepali_text:
@@ -147,11 +144,9 @@ def requiredNumberOfIterations(averageGap : int, is_nepali_text: bool = False):
         return 0 
     else:
         print(f"[DEBUG] Non-Nepali text detected. Calculating iterations.")
-        # Use your derived linear formula for non-Nepali (e.g., English) text
         temp = 0.7 * averageGap - 0.3333 
 
-        # Add a sanity check for minimum iteration (e.g., at least 1 or 2 for basic smudging)
-        min_iterations = 2 # Or 1, depending on minimum smudging needed
+        min_iterations = 2 
         
         calculated_iterations = max(min_iterations, np.round(temp).astype(int))
         print(f"[DEBUG] Calculated iterations for non-Nepali: {calculated_iterations}")

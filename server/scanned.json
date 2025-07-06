@@ -1,0 +1,332 @@
+[
+  {
+    "image_filename": "test/scanned/scanned-images-0.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [
+      [606, 733, 754, 791],
+      [513, 1282, 674, 1356]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-1.jpg",
+    "search_word": "parchment",
+    "ground_truth_boxes": [
+      [801, 1470, 1071, 1532],
+      [871, 2761, 1142, 2830]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-2.jpg",
+    "search_word": "where",
+    "ground_truth_boxes": [
+      [465, 1085, 636, 1144],
+      [1710, 1447, 1887, 1503],
+      [1987, 1794, 2166, 1855],
+      [1535, 3003, 1712, 3064]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-3.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [424, 1767, 534, 1836],
+      [507, 2115, 626, 2183],
+      [973, 2970, 1087, 3053],
+      [1063, 3097, 1174, 3160]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-4.jpg",
+    "search_word": "cottage",
+    "ground_truth_boxes": [
+      [1826, 688, 2026, 753],
+      [1748, 1243, 1950, 1307],
+      [670, 2481, 877, 2551]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-5.jpg",
+    "search_word": "would",
+    "ground_truth_boxes": [
+      [1283, 225, 1434, 279],
+      [934, 523, 1086, 580]
+    ]
+  },
+ 
+  {
+    "image_filename": "test/scanned/scanned-images-6.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [
+      [1091, 1687, 1245, 1747],
+      [953, 2665, 1116, 2732]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-7.jpg",
+    "search_word": "empty",
+    "ground_truth_boxes": [[1640, 3010, 1790, 3060]]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-8.jpg",
+    "search_word": "little",
+    "ground_truth_boxes": [
+      [578, 471, 697, 526],
+      [1377, 2259, 1496, 2325],
+      [432, 2829, 552, 2891]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-9.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [483, 184, 755, 247],
+      [273, 1078, 546, 1143],
+      [1763, 2910, 2041, 2972],
+      [617, 3018, 892, 3087]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-10.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [1271, 1036, 1481, 1092],
+      [716, 2740, 925, 2803],
+      [1246, 2967, 1460, 3023]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-11.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [442, 1172, 543, 1236],
+      [1122, 2155, 1234, 2214],
+      [983, 2485, 1097, 2552],
+      [584, 3042, 704, 3109],
+      [547, 2057, 646, 2097]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-12.jpg",
+    "search_word": "must",
+    "ground_truth_boxes": [
+      [686, 1396, 820, 1449],
+      [301, 1838, 434, 1898],
+      [1526, 2521, 1672, 2575],
+      [1395, 2628, 1532, 2690],
+      [1091, 3071, 1222, 3137]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-13.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [394, 277, 500, 339],
+      [899, 389, 1003, 452],
+      [1509, 390, 1619, 444],
+      [1902, 1477, 2019, 1529]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-14.jpg",
+    "search_word": "little",
+    "ground_truth_boxes": [[948, 692, 1053, 735]]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-15.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [1382, 1803, 1486, 1876],
+      [1055, 2127, 1160, 2184],
+      [823, 2335, 919, 2392]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-16.jpg",
+    "search_word": "them",
+    "ground_truth_boxes": [
+      [1997, 294, 2126, 351],
+      [1683, 1754, 1824, 1814],
+      [817, 3003, 960, 3058]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-17.jpg",
+    "search_word": "compression",
+    "ground_truth_boxes": [
+      [249, 219, 581, 265],
+      [1328, 532, 1656, 590],
+      [1630, 1648, 1964, 1697],
+      [931, 2519, 1263, 2591],
+      [660, 2848, 991, 2913],
+      [1109, 3066, 1432, 3128]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-18.jpg",
+    "search_word": "huffman",
+    "ground_truth_boxes": [
+      [1692, 1065, 1926, 1129],
+      [1103, 1297, 1335, 1365],
+      [310, 1759, 535, 1823],
+      [1007, 2218, 123, 2277]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-19.jpg",
+    "search_word": "got",
+    "ground_truth_boxes": [[905, 149, 990, 205]]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-20.jpg",
+    "search_word": "compression",
+    "ground_truth_boxes": [
+      [1005, 856, 1326, 923],
+      [945, 2320, 1267, 2385],
+      [930, 2437, 1252, 2497],
+      [1696, 2665, 2021, 2722],
+      [1199, 2771, 1519, 2822]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-21.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [1413, 1559, 1545, 1623],
+      [1503, 2015, 1637, 2078],
+      [789, 2897, 912, 2965],
+      [1622, 3128, 1750, 3199]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-22.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [1515, 279, 1638, 353],
+      [1779, 1895, 1897, 1942],
+      [954, 507, 1080, 579]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-23.jpg",
+    "search_word": "their",
+    "ground_truth_boxes": [
+      [2002, 262, 2123, 332],
+      [1204, 1522, 1328, 1579],
+      [574, 1631, 703, 1695]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-24.jpg",
+    "search_word": "light",
+    "ground_truth_boxes": [
+      [1399, 136, 1523, 206],
+      [652, 464, 775, 537],
+      [1782, 1244, 1908, 1319]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-25.jpg",
+    "search_word": "made",
+    "ground_truth_boxes": [
+      [1660, 205, 1776, 263],
+      [805, 962, 968, 1024],
+      [799, 2446, 955, 2495],
+      [1569, 2660, 1718, 2710]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-26.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [330, 844, 540, 909],
+      [1435, 2428, 1648, 2488],
+      [1787, 2658, 1997, 2719]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-27.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [559, 495, 674, 562],
+      [1676, 2008, 1792, 2073],
+      [1461, 2583, 1573, 2642],
+      [1379, 2926, 1487, 2986]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-28.jpg",
+    "search_word": "looking",
+    "ground_truth_boxes": [
+      [1662, 2662, 1852, 2741],
+      [1322, 694, 1522, 763]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-29.jpg",
+    "search_word": "never",
+    "ground_truth_boxes": [
+      [1806, 173, 1966, 234],
+      [1625, 615, 1782, 663],
+      [306, 507, 465, 557],
+      [620, 1985, 786, 2045],
+      [301, 2552, 456, 2618]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-30.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [318, 1726, 444, 1793],
+      [739, 1498, 861, 1560],
+      [725, 1379, 849, 1435],
+      [738, 110, 869, 181]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-31.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [1986, 360, 2100, 410],
+      [1371, 920, 1495, 963]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-32.jpg",
+    "search_word": "could",
+    "ground_truth_boxes": [
+      [322, 2070, 475, 2138],
+      [880, 1037, 1038, 1103],
+      [1743, 706, 1891, 777]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-33.jpg",
+    "search_word": "them",
+    "ground_truth_boxes": [
+      [585, 1853, 724, 1915],
+      [606, 2664, 751, 2726],
+      [1527, 2668, 1664, 2731]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-34.jpg",
+    "search_word": "great",
+    "ground_truth_boxes": [
+      [1474, 1255, 1611, 1317],
+      [295, 2393, 446, 2464],
+      [1491, 2981, 1637, 3047]
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-35.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      
+    ]
+  },
+  {
+    "image_filename": "test/scanned/scanned-images-36.jpg",
+    "search_word": "hello",
+    "ground_truth_boxes": []
+  }
+]

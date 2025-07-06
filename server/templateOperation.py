@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont 
 import preProcessing as pp
-import wordExtract as we # Assuming wordExtract.py is correctly set up
+import wordExtract as we 
 
 # Minimum number of good matches required for SIFT (general threshold)
-MIN_MATCH_COUNT = 7 # This can be adjusted globally or within functions
+MIN_MATCH_COUNT = 7 
 
 def is_nepali(text):
     """
@@ -18,13 +18,12 @@ def createTemplate(word: str, fontSize: int):
     """
     Create a template image for the given word with specified font size.
     """
-     # Corrected 'ch' to 'text'
+    
     word_is_nepali = is_nepali(word)
 
     font_path = "./fonts/nepali.TTF" if word_is_nepali else "./fonts/arial.TTF"
     print(f"[DEBUG] Font path being used: {font_path}")
     try:
-        # Scale font size, and ensure a minimum size for SIFT to work effectively
         fontSize = max(20, np.round(fontSize * 1.5).astype(int)) 
         font = ImageFont.truetype(font_path, fontSize)
     except Exception as e:
@@ -46,7 +45,7 @@ def createTemplate(word: str, fontSize: int):
         
         wordImage = np.array(img)
 
-        # For debugging template generation
+      
         # cv2.imshow("Generated Template", wordImage)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
@@ -63,16 +62,15 @@ def createTemplate(word: str, fontSize: int):
     averageHeight_Pixel, tallestText = pp.averageHeightOfLetters(image=wordImage)
     imageShape = wordImage.shape
 
-    # Ensure tallestText indices are valid
     tallestText_top = max(0, min(tallestText[0], imageShape[0] - 1))
-    tallestText_bottom = max(0, min(tallestText[1], imageShape[0])) # bottom is exclusive
+    tallestText_bottom = max(0, min(tallestText[1], imageShape[0])) 
 
     tallestLineImage = wordImage[tallestText_top:tallestText_bottom, 0:imageShape[1]]
     
-    # Handle cases where tallestLineImage might be empty
+   
     if tallestLineImage.size == 0:
         print("[WARNING] Tallest line image is empty. Cannot calculate average gap.")
-        averageGap_Pixel = 1 # Default to a small gap to avoid division by zero or errors
+        averageGap_Pixel = 1
     else:
         averageGap_Pixel = pp.averageGapOfLetter(image=tallestLineImage)
 
@@ -86,17 +84,17 @@ def createTemplate(word: str, fontSize: int):
                                   averageHeight=averageHeight_Pixel,
                                   smudgedIteration=iterationNumber)
     
-    # Ensure wordsProperty is not empty before popping
+   
     if not wordsProperty:
         print(f"[ERROR] No word properties extracted from template for word: {word}")
         return None
 
-    # pop() returns the last item, assumes there is at least one
+    
     wordsProperty_single = wordsProperty.pop()
 
     left, top, right, bottom = wordPropertyTOdirectionConvertor(wordsProperty_single)
 
-    # Ensure bounding box coordinates are valid
+  
     img_height, img_width = wordImage.shape[:2]
     left = max(0, left)
     top = max(0, top)
@@ -109,11 +107,10 @@ def createTemplate(word: str, fontSize: int):
 
     wordImage = wordImage[top:bottom, left:right]
 
-    # --- NEW CHECK: Ensure the final template image is not empty after all processing ---
     if wordImage.size == 0:
         print(f"[ERROR] Final template image is empty after word extraction and slicing for word: {word}")
         return None
-    # --- END NEW CHECK ---
+    
 
     return wordImage
 
@@ -130,18 +127,13 @@ def dynamic_threshold(area: int) -> float:
     Smaller area => lower threshold (more strict),
     Larger area => higher threshold (more lenient).
     """
-    # Avoid zero or negative areas
     area = max(area, 1)
 
-    # Define min/max thresholds
-    min_thresh = 0.4
-    max_thresh = 0.75
+    min_thresh = 0.35
+    max_thresh = 0.5
 
-    # Use log-scaled range and normalize
-    # Adjust constants if the curve needs to shift
-    scale = (np.log10(area) - 1) / 2.0  # log10(10) -> 0; log10(1000) -> ~1.5
+    scale = (np.log10(area) - 1) / 2.0  
 
-    # Clamp scale between 0 and 1
     scale = max(0.0, min(1.0, scale))
 
     return min_thresh + (max_thresh - min_thresh) * scale
@@ -170,7 +162,6 @@ def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
         height = bottom - top
         area = width * height
 
-        # Skip if bounding box is invalid
         if width <= 0 or height <= 0:
             continue
 
@@ -214,31 +205,26 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
         print("[WARNING] Skipping SIFT matching: template is empty.")
         return []
 
-    # Initialize SIFT detector with parameters optimized for text
     sift = cv2.SIFT_create(
-        nfeatures=0,             # No limit on features
-        contrastThreshold=0.04,  # Slightly higher to reduce noise (was 0.03)
-        edgeThreshold=10,        # Higher to reduce edge noise (was 8)
+        nfeatures=0,            
+        contrastThreshold=0.04, 
+        edgeThreshold=10,       
         sigma=1.6
     )
     
-    # Use FLANN matcher for better performance
     FLANN_INDEX_KDTREE = 1
     index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
     search_params = dict(checks=50)
     flann = cv2.FlannBasedMatcher(index_params, search_params)
 
-    # --- Preprocess template for SIFT ---
     if len(template.shape) == 3:
         template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
     else:
         template_gray = template.copy()
     template_gray = template_gray.astype(np.uint8)
 
-    # Minimal preprocessing - just ensure good contrast
     template_gray = cv2.equalizeHist(template_gray)
-    
-    # Scale up small templates for better feature detection
+  
     template_height, template_width = template_gray.shape
     if template_height < 25 or template_width < 50:
         scale_factor = 2.0
@@ -250,7 +236,7 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
 
     kp_template, des_template = sift.detectAndCompute(template_gray, None)
 
-    if des_template is None or len(kp_template) < 6:  # Slightly higher minimum
+    if des_template is None or len(kp_template) < 6:  
         print(f"[WARNING] Not enough keypoints found in template ({len(kp_template) if kp_template else 0}). SIFT matching skipped.")
         return []
 
@@ -259,7 +245,6 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
     match_count = 0
     template_area = template_height * template_width
     
-    # Store candidates with their scores for ranking
     candidates_with_scores = []
     
     for wp in wordsProperty:
@@ -271,95 +256,80 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
         candidate_img = image[top:bottom, left:right]
         if candidate_img.size == 0:
             continue
-
-        # More lenient size filtering
         width = right - left
         height = bottom - top
         if width < 15 or height < 10:
             continue
 
-        # Size similarity check - reject candidates that are too different in size
         candidate_area = width * height
         size_ratio = candidate_area / template_area if template_area > 0 else 0
-        if size_ratio < 0.3 or size_ratio > 3.0:  # Tighter size filtering
+        if size_ratio < 0.3 or size_ratio > 3.0:  
             continue
 
-        # --- Preprocess candidate for SIFT ---
         if len(candidate_img.shape) == 3:
             candidate_gray = cv2.cvtColor(candidate_img, cv2.COLOR_BGR2GRAY)
         else:
             candidate_gray = candidate_img.copy()
         candidate_gray = candidate_gray.astype(np.uint8)
 
-        # Same minimal preprocessing as template
         candidate_gray = cv2.equalizeHist(candidate_gray)
         if scale_factor != 1.0:
             candidate_gray = cv2.resize(candidate_gray, (0, 0), fx=scale_factor, fy=scale_factor, interpolation=cv2.INTER_CUBIC)
 
         kp_candidate, des_candidate = sift.detectAndCompute(candidate_gray, None)
         
-        if des_candidate is None or len(kp_candidate) < 6:  # Consistent with template minimum
+        if des_candidate is None or len(kp_candidate) < 6:  
             continue
 
         try:
-            # Use FLANN for matching
             matches = flann.knnMatch(des_template, des_candidate, k=2)
         except (cv2.error, ValueError):
-            # Fall back to brute force if FLANN fails
             try:
                 bf = cv2.BFMatcher()
                 matches = bf.knnMatch(des_template, des_candidate, k=2)
             except:
                 continue
 
-        # Filter matches that have 2 neighbors
         valid_matches = [m for m in matches if len(m) == 2]
-        if len(valid_matches) < 8:  # Higher minimum
+        if len(valid_matches) < 8: 
             continue
 
-        # Apply stricter Lowe's ratio test
         good_matches = []
         for m, n in valid_matches:
-            if m.distance < 0.65 * n.distance:  # Stricter ratio test
+            if m.distance < 0.65 * n.distance: 
                 good_matches.append(m)
 
-        if len(good_matches) < 10:  # Higher minimum good matches
+        if len(good_matches) < 10:  
             continue
 
-        # Calculate similarity metrics
         match_ratio = len(good_matches) / len(kp_template)
         candidate_coverage = len(good_matches) / len(kp_candidate)
         
-        # More stringent adaptive criteria
-        if len(kp_template) > 100:  # High feature count template
-            min_ratio = 0.10    # Slightly higher
-            min_coverage = 0.12  # Higher coverage requirement
-        elif len(kp_template) > 50:  # Medium feature count
+        
+        if len(kp_template) > 100:  
+            min_ratio = 0.10    
+            min_coverage = 0.12  
+        elif len(kp_template) > 50: 
             min_ratio = 0.15
             min_coverage = 0.15
-        else:  # Low feature count
+        else:  
             min_ratio = 0.25
             min_coverage = 0.20
         
         print(f"[DEBUG] Candidate {wp}: {len(good_matches)} matches, ratio: {match_ratio:.3f}, coverage: {candidate_coverage:.3f}, min_ratio: {min_ratio:.3f}")
         
-        # Check if candidate meets minimum criteria
         if (len(good_matches) >= 10 and 
             match_ratio >= min_ratio and 
             candidate_coverage >= min_coverage):
             
-            # Calculate composite score for ranking
-            # Higher score = better match
             quality_score = (match_ratio * 0.4 + 
                            candidate_coverage * 0.3 + 
-                           len(good_matches) / 30.0 * 0.3)  # Normalize match count
+                           len(good_matches) / 30.0 * 0.3) 
             
             candidates_with_scores.append((wp, len(good_matches), quality_score, match_ratio, candidate_coverage))
 
-    # Sort candidates by quality score (descending)
     candidates_with_scores.sort(key=lambda x: x[2], reverse=True)
     
-    # Take only the top 3-5 best matches to reduce false positives
     max_matches = min(5, len(candidates_with_scores))
     
     for i in range(max_matches):
@@ -377,8 +347,7 @@ def preprocess_text_for_sift_minimal(img: np.ndarray) -> np.ndarray:
     """
     if img.dtype != np.uint8:
         img = img.astype(np.uint8)
-    
-    # Just equalize histogram for better contrast
+
     return cv2.equalizeHist(img)
 
 def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple], matching_mode: str = "auto"):
@@ -430,7 +399,6 @@ def wordPropertyTOdirectionConvertor(wordsProperty: tuple):
     Convert a wordProperty tuple from ((left, top), (right, bottom)) to (left, top, right, bottom).
     This function ensures consistent unpacking throughout.
     """
-    # Assuming wordsProperty is a tuple of two tuples: ((x1, y1), (x2, y2))
     return (wordsProperty[0][0], wordsProperty[0][1], wordsProperty[1][0], wordsProperty[1][1])
 
 
@@ -439,12 +407,10 @@ def putRectangles(image: np.ndarray, wordProperty: list):
     Draw rectangles on the image for each word property.
     Expects wordProperty as a list of ((left, top), (right, bottom)) tuples.
     """
-    # Ensure image is mutable if it comes from base64 (might be read-only)
     if not image.flags['WRITEABLE']:
         image = image.copy()
         
     for leftTop_RightBottom in wordProperty:
-        # Drawing rectangle with green color (0, 255, 0) and thickness 1
         cv2.rectangle(image, pt1=leftTop_RightBottom[0], pt2=leftTop_RightBottom[1], color=(0, 255, 0), thickness=1)
 
     return image
@@ -486,7 +452,7 @@ def _tm_ccoeff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
             similarityScore = cv2.matchTemplate(sectionOfImage, scaledTemplate, cv2.TM_CCOEFF_NORMED)
             max_val = cv2.minMaxLoc(similarityScore)[1]
 
-            threshold = 0.6
+            threshold = 0.63
             if max_val > threshold:
                 foundWords.append(wp)
 

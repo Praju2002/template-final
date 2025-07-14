@@ -5,8 +5,8 @@ import cv2
 import numpy as np
 
 FLASK_API_URL = "http://127.0.0.1:5000/upload"
-GROUND_TRUTH_FILE ="lowcontrast.json"
-TEST_IMAGES_DIR = "test/low_contrast/"
+GROUND_TRUTH_FILE ="scanned.json"
+TEST_IMAGES_DIR = "test/scanned/"
 
 TOTAL_TRUE_POSITIVES = 0
 TOTAL_FALSE_POSITIVES = 0

@@ -341,14 +341,6 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
     print(f"[DEBUG] SIFT found {match_count} matches out of {len(wordsProperty)} candidates")
     return foundWords
 
-def preprocess_text_for_sift_minimal(img: np.ndarray) -> np.ndarray:
-    """
-    Very minimal preprocessing for text SIFT - just histogram equalization.
-    """
-    if img.dtype != np.uint8:
-        img = img.astype(np.uint8)
-
-    return cv2.equalizeHist(img)
 
 def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple], matching_mode: str = "auto"):
     """

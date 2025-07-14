@@ -323,10 +323,5 @@
     "ground_truth_boxes": [
       
     ]
-  },
-  {
-    "image_filename": "test/low_contrast/scanned-images-36.jpg",
-    "search_word": "hello",
-    "ground_truth_boxes": []
   }
 ]

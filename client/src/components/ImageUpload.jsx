@@ -214,7 +214,7 @@ const ImageUpload = () => {
         <CardContent sx={{ p: 4 }}>
           <Box textAlign="center" mb={4}>
             <Typography variant="h4" sx={{ color: '#a855f7', fontWeight: 600, mb: 1 }}>
-              Word Detection System
+              DocuFind
             </Typography>
             <Typography variant="body1" color="#6b7280">
               Upload an image and search for specific words

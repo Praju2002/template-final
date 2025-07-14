@@ -76,16 +76,13 @@ def averageHeightOfLetters(image : np.ndarray):
 
         currentPixelIs0 = True if(sumOfCurrentPixel ==0 )else False
         nextPixelIs0 = True if(sumOfNextPixel == 0 )else False
-
         typeCase = (currentPixelIs0, nextPixelIs0)
-
         match typeCase:
             case (True, True):
                 continue
             case (True, False):
                 NumberOfLine += 1
                 heightAtWhichLineStarts =i
-
             case (False, True):
                 currentHeight += 1
 

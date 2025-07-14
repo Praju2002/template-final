@@ -46,3 +46,7 @@ Contributing
 Contributions are welcome! Please submit issues or pull requests to the repository. Ensure code follows PEP 8 style guidelines and includes tests for new features.
 Contact
 For questions or feedback, please contact Praju Khanal at prajukhanal21@gmail.com.
+**📸**  
+!(./client/assets/Screenshot 2025-07-14 122347.png)  
+!(./client/assets/Screenshot 2025-07-14 122248.png)  
+!(./client/assets/Screenshot 2025-07-14 122334.png)  

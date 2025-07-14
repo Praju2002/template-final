@@ -1,5 +1,6 @@
-Word Detection and Highlighting System
-Overview
+DocuFind
+
+Overview:
 This project is a Flask-based web application that detects and highlights specific words in images using computer vision techniques. It supports both English and Nepali text, leveraging OpenCV for image preprocessing, word extraction, and template matching. The system processes uploaded images, identifies regions containing a specified search word, and returns base64-encoded images showing the processing stages and final results with highlighted matches. A testing framework evaluates performance using precision, recall, and F1-score metrics based on ground truth data.
 Features
 
@@ -44,4 +45,4 @@ python app.py
 Contributing
 Contributions are welcome! Please submit issues or pull requests to the repository. Ensure code follows PEP 8 style guidelines and includes tests for new features.
 Contact
-For questions or feedback, please contact Praju Khanal at prajukhanal21@gmaol.com.
+For questions or feedback, please contact Praju Khanal at prajukhanal21@gmail.com.

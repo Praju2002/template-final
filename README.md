@@ -47,6 +47,6 @@ Contributions are welcome! Please submit issues or pull requests to the reposito
 Contact
 For questions or feedback, please contact Praju Khanal at prajukhanal21@gmail.com.
 **📸**  
-![Overview](./client/src/assets/Screenshot 2025-07-14 122347.png)  
-![Result](./client/src/assets/Screenshot 2025-07-14 122248.png)  
-![Result](./client/src/assets/Screenshot 2025-07-14 122334.png)
+![Overview](./client/assets/Screenshot 2025-07-14 122347.png)  
+![Result](./client/assets/Screenshot 2025-07-14 122248.png)  
+![Result](./client/assets/Screenshot 2025-07-14 122334.png)

@@ -149,7 +149,7 @@ def normalize(img: np.ndarray) -> np.ndarray:
 
 def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple]):
     """
-    Performs template matching using TM_SQDIFF_NORMED.
+    Performs template matching using TM_SQDIFF_NORMED and returns scores.
     """
     foundWords = []
     if template is None or template.size == 0:
@@ -187,7 +187,7 @@ def _tm_sqdiff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
             # print(f"[DEBUG] TM_SQDIFF_NORMED: Area: {area}, Threshold: {threshold:.2f}, Score: {min_val:.2f}")
 
             if min_val < threshold:
-                foundWords.append(wp)
+                foundWords.append((wp, float(1 - min_val)))
         # else:
             # print(f"[SKIP] TM_SQDIFF_NORMED: Word property {wp} - section {sectionOfImage.shape}, template {scaledTemplate.shape}")
 
@@ -334,7 +334,7 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
     
     for i in range(max_matches):
         wp, good_match_count, score, ratio, coverage = candidates_with_scores[i]
-        foundWords.append(wp)
+        foundWords.append((wp, float(min(score, 1.0))))
         match_count += 1
         print(f"[MATCH] SIFT Match #{i+1} found at {wp} with {good_match_count} good matches (score: {score:.3f})")
 
@@ -345,10 +345,8 @@ def _sift_template_matching(image: np.ndarray, template: np.ndarray, wordsProper
 def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple], matching_mode: str = "auto"):
     """
     Performs template matching using the specified mode.
-    'auto' attempts to determine if text is printed or varied and applies appropriate method.
-    'TM_SQDIFF_NORMED' uses standard template matching.
-    'SIFT' uses SIFT feature matching.
-    Expects wordsProperty as a list of ((left, top), (right, bottom)) tuples.
+    Auto mode returns dictionaries with box, raw score, stage, and confidence.
+    Explicit modes return (box, score) tuples.
     """
     if template is None or template.size == 0:
         print("[WARNING] Template is empty. Skipping all matching operations.")
@@ -374,13 +372,17 @@ def templateMatching(image: np.ndarray, template: np.ndarray, wordsProperty: lis
     elif matching_mode == "auto":
         print("[INFO] Auto mode: Attempting TM_CCOEFF_NORMED first.")
         found = _tm_ccoeff_normed_matching(image, template, wordsProperty)
+        if found:
+            return [{"box": wp, "score": score, "stage": 1, "confidence": confidenceScore(score, 1)} for wp, score in found]
         if not found:
-            print("[INFO] No matches found with TM_SQDIFF_NORMED, trying TM_CCOEFF_NORMED.")
+            print("[INFO] No matches with TM_CCOEFF_NORMED, trying TM_SQDIFF_NORMED.")
             found = _tm_sqdiff_normed_matching(image, template, wordsProperty)
+        if found:
+            return [{"box": wp, "score": score, "stage": 2, "confidence": confidenceScore(score, 2)} for wp, score in found]
         if not found:
-            print("[INFO] No matches found with TM_CCOEFF_NORMED, trying SIFT.")
+            print("[INFO] No matches with TM_SQDIFF_NORMED, trying SIFT.")
             found = _sift_template_matching(image, template, wordsProperty)
-        return found
+        return [{"box": wp, "score": score, "stage": 3, "confidence": confidenceScore(score, 3)} for wp, score in found]
     else:
         print(f"[ERROR] Invalid matching_mode: {matching_mode}. Defaulting to TM_SQDIFF_NORMED.")
         return _tm_ccoeff_normed_matching(image, template, wordsProperty)
@@ -397,20 +399,21 @@ def wordPropertyTOdirectionConvertor(wordsProperty: tuple):
 def putRectangles(image: np.ndarray, wordProperty: list):
     """
     Draw rectangles on the image for each word property.
-    Expects wordProperty as a list of ((left, top), (right, bottom)) tuples.
+    Accepts bare boxes, (box, score) tuples, or confidence dictionaries.
     """
     if not image.flags['WRITEABLE']:
         image = image.copy()
         
-    for leftTop_RightBottom in wordProperty:
-        cv2.rectangle(image, pt1=leftTop_RightBottom[0], pt2=leftTop_RightBottom[1], color=(0, 255, 0), thickness=1)
+    for result in wordProperty:
+        box = result.get("box") if isinstance(result, dict) else result[0] if isinstance(result, tuple) and len(result) == 2 and isinstance(result[1], (int, float)) else result
+        cv2.rectangle(image, pt1=box[0], pt2=box[1], color=(0, 255, 0), thickness=1)
 
     return image
 
 def _tm_ccoeff_normed_matching(image: np.ndarray, template: np.ndarray, wordsProperty: list[tuple]):
     """
     Performs template matching using TM_CCOEFF_NORMED.
-    Returns word regions where the normalized correlation coefficient is high.
+    Returns (word region, normalized correlation score) tuples.
     """
     foundWords = []
     if template is None or template.size == 0:
@@ -446,6 +449,13 @@ def _tm_ccoeff_normed_matching(image: np.ndarray, template: np.ndarray, wordsPro
 
             threshold = 0.63
             if max_val > threshold:
-                foundWords.append(wp)
+                foundWords.append((wp, float(max_val)))
 
     return foundWords
+
+
+def confidenceScore(score: float, stage: int) -> float:
+    """Combine a normalized matcher score with the fallback stage."""
+    stage_weight = {1: 1.0, 2: 0.8, 3: 0.6}
+    weight = stage_weight.get(stage, 0.5)
+    return round(max(0.0, min(1.0, score)) * weight, 3)

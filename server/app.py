@@ -129,7 +129,8 @@ def upload():
                     thickness=2)
 
     cleaned_found_words = []
-    for box_pair in foundWords:
+    for result in foundWords:
+        box_pair = result.get("box") if isinstance(result, dict) else result[0] if isinstance(result, tuple) and len(result) == 2 and isinstance(result[1], (int, float)) else result
         x1, y1 = int(box_pair[0][0]), int(box_pair[0][1])
         x2, y2 = int(box_pair[1][0]), int(box_pair[1][1])
         cleaned_found_words.append(((x1, y1), (x2, y2)))

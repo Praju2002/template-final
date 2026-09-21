@@ -1,0 +1,318 @@
+[
+  {
+    "image_filename": "test/crumpled_page-0001.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [716, 1172, 823, 1203],
+      [880, 1277, 989, 1316],
+      [205, 444, 300, 465]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0002.jpg",
+    "search_word": "made",
+    "ground_truth_boxes": [
+      [786, 103, 863, 151],
+      [389, 491, 466, 522],
+      [367, 1186, 448, 1225],
+      [727, 1301, 802, 1327]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0003.jpg",
+    "search_word": "they",
+    "ground_truth_boxes": [
+      [569, 65, 636, 110],
+      [950, 1453, 1012, 1491],
+      [844, 1508, 910, 1553]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0004.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [
+      [539, 819, 615, 863],
+      [464, 1288, 543, 1332]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0005.jpg",
+    "search_word": "through",
+    "ground_truth_boxes": [
+      [296, 536, 406, 574],
+      [886, 652, 1004, 693],
+      [515, 762, 616, 802]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0006.jpg",
+    "search_word": "morning",
+    "ground_truth_boxes": [
+      [740, 726, 845, 755],
+      [446, 1135, 548, 1169]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0007.jpg",
+    "search_word": "discover",
+    "ground_truth_boxes": [
+      [740, 369, 853, 410],
+      [849, 486, 954, 519]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0008.jpg",
+    "search_word": "great",
+    "ground_truth_boxes": [
+      [731, 652, 799, 686],
+      [204, 1155, 275, 1187],
+      [732, 1434, 803, 1465]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0009.jpg",
+    "search_word": "believed",
+    "ground_truth_boxes": [
+      [494, 163, 601, 202],
+      [867, 527, 977, 560],
+      [177, 1103, 287, 1143]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0010.jpg",
+    "search_word": "following",
+    "ground_truth_boxes": [
+      [791, 1043, 907, 1087],
+      [487, 1086, 601, 1132],
+      [914, 1197, 1028, 1240]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0011.jpg",
+    "search_word": "moment",
+    "ground_truth_boxes": [
+      [360, 185, 463, 219],
+      [504, 438, 606, 472]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0012.jpg",
+    "search_word": "next",
+    "ground_truth_boxes": [
+      [251, 1357, 318, 1394],
+      [193, 1465, 256, 1506],
+      [751, 1516, 813, 1552],
+      [1029, 1363, 1096, 1396]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0013.jpg",
+    "search_word": "suddenly",
+    "ground_truth_boxes": [
+      [426, 1428, 544, 1468],
+      [713, 1432, 840, 1472]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0014.jpg",
+    "search_word": "little",
+    "ground_truth_boxes": [
+      [232, 1427, 287, 1462],
+      [680, 1171, 745, 1209],
+      [302, 272, 362, 314]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0015.jpg",
+    "search_word": "again",
+    "ground_truth_boxes": [
+      [202, 557, 277, 597],
+      [538, 938, 614, 977],
+      [615, 1050, 701, 1083]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0016.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [548, 88, 658, 128],
+      [653, 254, 766, 292],
+      [176, 145, 291, 180]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0017.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [266, 78, 406, 115],
+      [153, 512, 295, 547],
+      [879, 1426, 1032, 1473],
+      [303, 1470, 447, 1501]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0018.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [621, 1506, 729, 1544],
+      [370, 1384, 475, 1423],
+      [640, 563, 751, 602]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0019.jpg",
+    "search_word": "rather",
+    "ground_truth_boxes": [
+      [829, 941, 918, 992],
+      [987, 1057, 1083, 1102],
+      [919, 1232, 1002, 1279]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0020.jpg",
+    "search_word": "moment",
+    "ground_truth_boxes": [
+      [374, 1098, 487, 1136],
+      [685, 1211, 802, 1252]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0021.jpg",
+    "search_word": "suddenly",
+    "ground_truth_boxes": [
+      [177, 265, 303, 313],
+      [472, 273, 589, 319]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0022.jpg",
+    "search_word": "light",
+    "ground_truth_boxes": [
+      [684, 141, 743, 183],
+      [319, 298, 389, 351],
+      [860, 698, 916, 725]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0023.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [175, 135, 231, 169],
+      [430, 163, 491, 207],
+      [759, 170, 827, 209],
+      [953, 759, 1016, 799]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0024.jpg",
+    "search_word": "some",
+    "ground_truth_boxes": [
+      [269, 665, 343, 709],
+      [273, 791, 353, 826]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0025.jpg",
+    "search_word": "scores",
+    "ground_truth_boxes": [
+      [152, 1295, 240, 1348],
+      [284, 1300, 380, 1352]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0026.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [723, 910, 782, 944],
+      [558, 1075, 610, 1108],
+      [432, 1180, 490, 1215]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0027.jpg",
+    "search_word": "would",
+    "ground_truth_boxes": [
+      [747, 720, 826, 756],
+      [601, 941, 684, 974],
+      [968, 1231, 1061, 1261]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0028.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [330, 1112, 461, 1156],
+      [912, 119, 1058, 167]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0029.jpg",
+    "search_word": "hello",
+    "ground_truth_boxes": []
+  },
+  {
+    "image_filename": "test/crumpled_page-0030.jpg",
+    "search_word": "possessed",
+    "ground_truth_boxes": [
+      [771, 670, 916, 713],
+      [633, 720, 782, 767],
+      [273, 832, 428, 878]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0031.jpg",
+    "search_word": "through",
+    "ground_truth_boxes": [
+      [880, 1514, 989, 1554],
+      [561, 204, 667, 249]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0032.jpg",
+    "search_word": "cottage",
+    "ground_truth_boxes": [
+      [918, 363, 1029, 399],
+      [882, 652, 985, 693],
+      [350, 1257, 453, 1299]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0033.jpg",
+    "search_word": "compression",
+    "ground_truth_boxes": [
+      [165, 63, 335, 101],
+      [713, 227, 883, 285],
+      [864, 809, 1033, 860],
+      [480, 1269, 648, 1317],
+      [345, 1420, 508, 1481],
+      [562, 1548, 734, 1588]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0034.jpg",
+    "search_word": "Huffman",
+    "ground_truth_boxes": [
+      [825, 539, 931, 561],
+      [539, 649, 641, 679],
+      [153, 870, 253, 892],
+      [486, 1090, 590, 1120]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0035.jpg",
+    "search_word": "fingers",
+    "ground_truth_boxes": [
+      [368, 153, 462, 202],
+      [926, 446, 1038, 494],
+      [863, 1234, 964, 1277]
+    ]
+  },
+  {
+    "image_filename": "test/crumpled_page-0036.jpg",
+    "search_word": "parchment",
+    "ground_truth_boxes": [
+      [414, 1382, 558, 1423],
+      [370, 740, 512, 784]
+    ]
+  }
+]

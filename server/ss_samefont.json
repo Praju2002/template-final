@@ -1,0 +1,479 @@
+[
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0001.jpg",
+    "search_word": "necessary",
+    "ground_truth_boxes": [[430, 1416, 555, 1448]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0002.jpg",
+    "search_word": "changes",
+    "ground_truth_boxes": [[256, 150, 360, 181]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0003.jpg",
+    "search_word": "seemed",
+    "ground_truth_boxes": [
+      [576, 150, 674, 179],
+      [221, 202, 319, 234],
+      [675, 308, 774, 338]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0004.jpg",
+    "search_word": "masked",
+    "ground_truth_boxes": [
+      [857, 782, 962, 814],
+      [219, 1153, 321, 1183]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0005.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [224, 153, 270, 174],
+      [805, 152, 853, 174],
+      [470, 206, 515, 228],
+      [468, 417, 512, 438],
+      [554, 735, 602, 752],
+      [314, 1155, 360, 1176],
+      [374, 1263, 416, 1283],
+      [960, 1156, 1009, 1175]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0006.jpg",
+    "search_word": "seen",
+    "ground_truth_boxes": [
+      [367, 257, 429, 283],
+      [695, 1523, 756, 1552]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0007.jpg",
+    "search_word": "cobwebbed",
+    "ground_truth_boxes": [[214, 630, 365, 654]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0008.jpg",
+    "search_word": "milky",
+    "ground_truth_boxes": [
+      [764, 679, 836, 708],
+      [675, 996, 747, 1024]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0009.jpg",
+    "search_word": "to",
+    "ground_truth_boxes": [
+      [963, 255, 1002, 282],
+      [617, 312, 645, 334],
+      [912, 421, 938, 439],
+      [674, 362, 693, 389],
+      [613, 522, 639, 546],
+      [844, 731, 873, 755]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0010.jpg",
+    "search_word": "hello",
+    "ground_truth_boxes": []
+  },
+
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0011.jpg",
+    "search_word": "her",
+    "ground_truth_boxes": [
+      [250, 208, 296, 230],
+      [676, 204, 725, 229],
+      [592, 254, 639, 278]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0012.jpg",
+    "search_word": "unworthy",
+    "ground_truth_boxes": [
+      [466, 1368, 574, 1394],
+      [974, 1528, 1082, 1552]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0013.jpg",
+    "search_word": "fell",
+    "ground_truth_boxes": [
+      [416, 204, 459, 231],
+      [330, 309, 376, 333]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0014.jpg",
+    "search_word": "moon",
+    "ground_truth_boxes": [
+      [384, 263, 450, 279],
+      [842, 529, 913, 546],
+      [932, 635, 1002, 654]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0015.jpg",
+    "search_word": "she",
+    "ground_truth_boxes": [
+      [506, 783, 549, 810],
+      [438, 1037, 496, 1080],
+      [344, 1153, 394, 1180],
+      [585, 1247, 631, 1293]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0016.jpg",
+    "search_word": "from",
+    "ground_truth_boxes": [
+      [760, 199, 833, 238],
+      [500, 302, 573, 343],
+      [893, 947, 943, 970]
+    ]
+  },
+
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0017.jpg",
+    "search_word": "that",
+    "ground_truth_boxes": [
+      [533, 461, 597, 496],
+      [313, 673, 374, 709],
+      [363, 735, 412, 755],
+      [702, 780, 761, 812],
+      [909, 999, 959, 1019],
+      [555, 1157, 604, 1177],
+      [315, 1368, 364, 1388]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0018.jpg",
+    "search_word": "feedback",
+    "ground_truth_boxes": [[817, 414, 925, 439]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0019.jpg",
+    "search_word": "compression",
+    "ground_truth_boxes": [
+      [225, 160, 374, 180],
+      [734, 319, 884, 338],
+      [873, 846, 1027, 866],
+      [538, 1268, 689, 1288],
+      [408, 1429, 558, 1446],
+      [621, 1532, 773, 1552]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0020.jpg",
+    "search_word": "ByteSaver",
+    "ground_truth_boxes": [[407, 195, 534, 230]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0021.jpg",
+    "search_word": "moment",
+    "ground_truth_boxes": [
+      [631, 840, 728, 864],
+      [716, 1317, 817, 1331]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0022.jpg",
+    "search_word": "scores",
+    "ground_truth_boxes": [
+      [216, 1310, 314, 1351],
+      [352, 1307, 444, 1336]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0023.jpg",
+    "search_word": "and",
+    "ground_truth_boxes": [
+      [508, 155, 555, 175],
+      [294, 260, 341, 280],
+      [314, 366, 361, 386],
+      [549, 366, 596, 386],
+      [769, 366, 816, 386],
+      [223, 419, 270, 439],
+      [290, 524, 337, 544],
+      [878, 735, 925, 755],
+      [332, 894, 379, 914],
+      [1012, 999, 1059, 1019],
+      [769, 1052, 816, 1072],
+      [362, 1105, 409, 1125],
+      [494, 1421, 541, 1441],
+      [915, 1421, 962, 1441]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0024.jpg",
+    "search_word": "Little",
+    "ground_truth_boxes": [
+      [957, 669, 1010, 702],
+      [999, 936, 1057, 967],
+      [865, 1523, 926, 1550]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0025.jpg",
+    "search_word": "would",
+    "ground_truth_boxes": [
+      [789, 733, 873, 757],
+      [648, 941, 735, 963],
+      [995, 1208, 1078, 1236]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0026.jpg",
+    "search_word": "were",
+    "ground_truth_boxes": [
+      [370, 362, 448, 389],
+      [215, 838, 291, 867],
+      [987, 840, 1052, 867]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0027.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [312, 150, 452, 184],
+      [210, 571, 351, 600],
+      [905, 1418, 1046, 1447],
+      [381, 1476, 507, 1504]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0028.jpg",
+    "search_word": "died",
+    "ground_truth_boxes": [
+      [214, 517, 284, 550],
+      [1035, 1465, 1098, 1494],
+      [606, 1522, 660, 1546]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0029.jpg",
+    "search_word": "something",
+    "ground_truth_boxes": [
+      [217, 1042, 352, 1081],
+      [217, 202, 350, 237]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0030.jpg",
+    "search_word": "longer",
+    "ground_truth_boxes": [[497, 361, 570, 386]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0031.jpg",
+    "search_word": "coming",
+    "ground_truth_boxes": [
+      [981, 1057, 1078, 1079],
+      [831, 1110, 923, 1129]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0032.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [
+      [581, 849, 659, 884],
+      [515, 1305, 594, 1338]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0033.jpg",
+    "search_word": "forest",
+    "ground_truth_boxes": [[679, 710, 750, 738]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0034.jpg",
+    "search_word": "like",
+    "ground_truth_boxes": [
+      [790, 145, 842, 178],
+      [818, 429, 868, 458]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0035.jpg",
+    "search_word": "where",
+    "ground_truth_boxes": [
+      [305, 586, 384, 616],
+      [878, 764, 960, 791],
+      [1003, 923, 1083, 949],
+      [790, 1465, 879, 1493]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0036.jpg",
+    "search_word": "parchment",
+    "ground_truth_boxes": [
+      [452, 748, 587, 781],
+      [489, 1360, 624, 1387]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0037.jpg",
+    "search_word": "between",
+    "ground_truth_boxes": [
+      [966, 202, 1077, 233],
+      [768, 590, 877, 620]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/project sample_page-0038.jpg",
+    "search_word": "hand",
+    "ground_truth_boxes": [
+      [518, 152, 575, 175],
+      [284, 208, 335, 231],
+      [916, 683, 967, 705]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0039.jpg",
+    "search_word": "seed",
+    "ground_truth_boxes": [
+      [1000, 268, 1058, 286]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0040.jpg",
+    "search_word": "fear",
+    "ground_truth_boxes": [
+     [930, 790, 985, 810]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0041.jpg",
+    "search_word": "the",
+    "ground_truth_boxes": [
+      [317, 164, 358, 182],
+      [594, 215, 634, 232],
+      [709, 215, 744, 235],
+      [832, 269, 874, 288],
+      [527, 374, 568, 392],
+      [535, 425, 581, 448],
+      [641, 422, 687, 441],
+      [383, 527, 422, 549],
+      [296, 631, 336, 659],
+      [364, 793, 402, 812],
+      [805, 798, 843, 812],
+      [1038, 791, 1077, 811],
+      [313, 845, 359, 864],
+      [304, 944, 345, 969],
+      [592, 949, 632, 969],
+      [866, 1000, 906, 1021],
+      [317, 1106, 358, 1127],
+      [534, 1159, 575, 1170],
+      [374, 1214, 414, 1232],
+      [487, 1264, 526, 1284],
+      [630, 1264, 671, 1284],
+      [778, 1264, 819, 1284],
+      [1027, 1262, 1068, 1284],
+      [886, 1317, 925, 1337],
+      [409, 1475, 449, 1495]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0042.jpg",
+    "search_word": "becoming",
+    "ground_truth_boxes": [[615, 687, 730, 712]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0043.jpg",
+    "search_word": "since",
+    "ground_truth_boxes": [[656, 265, 719, 287]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0044.jpg",
+    "search_word": "on",
+    "ground_truth_boxes": [
+      [754, 497, 785, 515],
+      [834, 986, 867, 1005]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0045.jpg",
+    "search_word": "about",
+    "ground_truth_boxes": [
+      [680, 441, 750, 463],
+      [302, 771, 378, 795],
+      [1013, 1315, 1082, 1335]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0046.jpg",
+    "search_word": "livestream",
+    "ground_truth_boxes": [[739, 1261, 860, 1282]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0047.jpg",
+    "search_word": "existentialist",
+    "ground_truth_boxes": [[457, 169, 599, 181]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0048.jpg",
+    "search_word": "unfolded",
+    "ground_truth_boxes": [[862, 927, 965, 953]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0049.jpg",
+    "search_word": "straight",
+    "ground_truth_boxes": [[605, 386, 695, 413]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0050.jpg",
+    "search_word": "overnight",
+    "ground_truth_boxes": [[708, 495, 816, 519]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0051.jpg",
+    "search_word": "the",
+    "ground_truth_boxes": [
+      [522, 160, 561, 180],
+      [222, 223, 262, 233],
+      [382, 318, 423, 338],
+      [1031, 371, 1062, 391],
+      [603, 493, 644, 513],
+      [272, 545, 313, 565],
+      [625, 615, 655, 634],
+      [251, 667, 293, 687],
+      [789, 667, 829, 687],
+      [949, 667, 990, 687],
+      [252, 720, 291, 740],
+      [674, 720, 715, 740],
+      [249, 835, 290, 845],
+      [557, 875, 595, 897],
+      [731, 999, 773, 1019],
+      [280, 1050, 322, 1072],
+      [346, 1100, 387, 1124],
+      [718, 1104, 759, 1124],
+      [366, 1157, 405, 1177],
+      [918, 1157, 959, 1177],
+      [556, 1209, 599, 1229],
+      [222, 1264, 262, 1282],
+      [824, 1314, 865, 1334],
+      [252, 1374, 293, 1404],
+      [460, 1384, 500, 1404],
+      [770, 1385, 810, 1404],
+      [924, 1384, 964, 1404],
+      [494, 1489, 535, 1509]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0052.jpg",
+    "search_word": "daily",
+    "ground_truth_boxes": [
+      [877, 435, 926, 475],
+      [649, 835, 697, 848]
+    ]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0053.jpg",
+    "search_word": "paused",
+    "ground_truth_boxes": [[563, 317, 652, 343]]
+  },
+  {
+    "image_filename": "test/scanned_same_font/screenshot_page-0054.jpg",
+    "search_word": "with",
+    "ground_truth_boxes": []
+  }
+]
